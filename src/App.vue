@@ -1,13 +1,35 @@
 <template>
+  <router-view />
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/" class="tab-bar-item">
+      <svg class="icon tab-bar-icon" aria-hidden="true">
+        <use xlink:href="#icon-Homehomepagemenu"></use>
+      </svg>
+      <div>首页</div>
+    </router-link>
+    <router-link to="/category" class="tab-bar-item">
+      <svg class="icon tab-bar-icon" aria-hidden="true">
+        <use xlink:href="#icon-category"></use>
+      </svg>
+      <div>分类</div></router-link
+    >
+    <router-link to="/shopcart" class="tab-bar-item">
+      <svg class="icon tab-bar-icon" aria-hidden="true">
+        <use xlink:href="#icon-shop-cart-"></use>
+      </svg>
+      <div>购物车</div></router-link
+    >
+    <router-link to="/profile" class="tab-bar-item">
+      <svg class="icon tab-bar-icon" aria-hidden="true">
+        <use xlink:href="#icon-04"></use>
+      </svg>
+      <div>我的</div></router-link
+    >
   </div>
-  <router-view/>
 </template>
 
 <style lang="scss">
-@import './assets/css/base.css';
+@import "./assets/css/base.css";
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -18,13 +40,30 @@
 
 #nav {
   padding: 30px;
+  background-color: #f6f6f6;
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 1px solid #2c3e5021;
 
   a {
-    font-weight: bold;
-    color: #2c3e50;
+    color: var(--color-text);
 
     &.router-link-exact-active {
       color: var(--color-high-text);
+    }
+  }
+
+  .tab-bar-item {
+    flex: 1;
+    font-size: var(--font-size);
+
+    .tab-bar-icon {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 5px;
     }
   }
 }
