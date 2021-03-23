@@ -9,27 +9,42 @@ const routes = [
   {
     path: '/',
     name: 'DefaultHome',
-    component: Home
+    component: Home,
+    meta: {
+      title: 'guagua-book',
+    }
   },
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta: {
+      title: 'guagua-book',
+    }
   },
   {
     path: '/category',
     name: 'Category',
-    component: Category
+    component: Category,
+    meta: {
+      title: 'guagua-book category',
+    }
   },
   {
     path: '/detail',
     name: 'Detail',
-    component: Detail
+    component: Detail,
+    meta: {
+      title: 'guagua-book detail',
+    }
   },
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      title: 'guagua-book user',
+    }
   },
   {
     path: '/shopcart',
@@ -37,13 +52,22 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: ShopCart
+    component: ShopCart,
+    meta: {
+      title: 'guagua-book shopcart',
+    }
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next)=>{
+  // if not authentication for login
+  next();
+  document.title = to.meta.title
 })
 
 export default router

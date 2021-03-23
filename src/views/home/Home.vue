@@ -1,22 +1,26 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:middle>
-              <h1>home</h1>
+      <template v-slot:left>
+        <svg class="icon tab-bar-icon" aria-hidden="true">
+          <use xlink:href="#icon-jiantou"></use>
+        </svg>
       </template>
+      <template v-slot:middle>商品首页</template>
     </nav-bar>
   </div>
 </template>
 
 <script>
-import NavBar from 'src/components/common/navbar/NavBar.vue'
+import NavBar from 'components/common/navbar/NavBar.vue'
 export default {
+  name: 'home',
   components: {
-    NavBar
-  }
-}
+    NavBar,
+  },
+  
+};
 </script>
 
 <style>
-
 </style>
