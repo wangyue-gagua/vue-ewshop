@@ -14,6 +14,7 @@
     <recommend-view :recommends="recommends"></recommend-view>
 
     <tab-control :titles="['畅销','新书','精选']" @tabClick="TabClick"></tab-control>
+    <goods-list></goods-list>
     {{tempid}}
   </div>
 </template>
@@ -21,7 +22,8 @@
 <script>
 import NavBar from 'components/common/navbar/NavBar.vue';
 import RecommendView from './childcompos/RecommendView.vue';
-import TabControl from 'components/content/tabcontrol/TabControl.vue'
+import TabControl from 'components/content/tabcontrol/TabControl.vue';
+import GoodsList from 'components/content/goods/GoodsList.vue';
 import getHomeAllData from 'network/home.js';
 import { onMounted, ref } from 'vue';
 
@@ -47,6 +49,7 @@ export default {
     NavBar,
     RecommendView,
     TabControl,
+    GoodsList,
   },
   
 };

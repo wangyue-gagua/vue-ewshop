@@ -39,7 +39,7 @@
 }
 
 #nav {
-  padding: 30px;
+  padding: 10px 10px 10px;
   background-color: #f6f6f6;
   display: flex;
   position: fixed;

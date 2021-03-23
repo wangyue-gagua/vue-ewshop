@@ -41,6 +41,7 @@ export default {
   display: flex;
   line-height: 40px;
   background-color: yellow;
+  z-index: 10;
 
   position: sticky;
   top: 45px;
