@@ -1,17 +1,20 @@
 <template>
   <div class="goods">
-    <GoodsListItem></GoodsListItem>
-    <GoodsListItem></GoodsListItem>
-    <GoodsListItem></GoodsListItem>
-    <GoodsListItem></GoodsListItem>
-    <GoodsListItem></GoodsListItem>
-    <GoodsListItem></GoodsListItem>
+    <GoodsListItem v-for="(item, index) of goodsData" :key="item.id" :good="item"></GoodsListItem>
   </div>
 </template>
 <script>
 import GoodsListItem from "./GoodsListItem.vue";
 export default {
   name: "GoodsList",
+  props: {
+    goodsData: {
+      type: Array,
+      default() {
+        return [];
+      }
+    }
+  },
   components: {
     GoodsListItem,
   },

@@ -1,16 +1,23 @@
 <template>
   <div class="goods-item">
-    <img src="~assets/logo.png" alt="" />
+    <img :src="good.cover_url" alt="" />
     <div class="goods-info">
-      <p>title</p>
-      <span class="price">￥300</span>
-      <span class="collect">3</span>
+      <p>{{good.title}}</p>
+      <span class="price"><small>￥</small>{{good.price}}</span>
+      <span class="collect">{{good.collects_count}}</span>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "GoodsListItem",
+  props: {
+    good: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }}
 };
 </script>
 
