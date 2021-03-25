@@ -16,9 +16,7 @@
   <div class="wrapper">
     <div class="content">
       <div ref="banref">
-        <div class="banners">
-          <img src="~assets/logo.png" alt="" />
-        </div>
+        <HomeSwiper :slides="slides"></HomeSwiper>
         <recommend-view :recommends="recommends"></recommend-view>
       </div>
       <div>
@@ -37,6 +35,7 @@ import RecommendView from "./childcompos/RecommendView.vue";
 import TabControl from "components/content/tabcontrol/TabControl.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import UpBack from "components/common/upback/UpBack.vue";
+import HomeSwiper from "views/home/childcompos/HomeSwiper.vue";
 import { getHomeAllData, getHomeGoods } from "network/home.js";
 import { computed, nextTick, onMounted, reactive, ref, watchEffect } from "vue";
 import BScroll from "better-scroll";
@@ -58,12 +57,14 @@ export default {
       new: { page: 1, data: [] },
       recommend: { page: 1, data: [] },
     });
+    let slides = ref([]);
     let recommends = ref([]);
     let bs = reactive({});
     let banref = ref(null);
     onMounted(() => {
       getHomeAllData().then((res) => {
         recommends.value = res.goods.data;
+        slides.value = res.slides;
       });
       getHomeGoods("sales").then((res) => {
         goodsData.sales.data = res.goods.data;
@@ -129,9 +130,10 @@ export default {
 
     const bTop = () => {
       bs.scrollTo(0, 0, 500);
-    }
+    };
     return {
       recommends,
+      slides,
       tab_title,
       TabClick,
       ShowGoodsData,
@@ -143,6 +145,7 @@ export default {
   },
   components: {
     NavBar,
+    HomeSwiper,
     RecommendView,
     TabControl,
     GoodsList,
