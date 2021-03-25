@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <GoodsListItem v-for="item of goodsData" :key="item.id" :good="item"></GoodsListItem>
+    <GoodsListItem v-for="item of goodsData" :key="item" :good="item"></GoodsListItem>
   </div>
 </template>
 <script>
@@ -27,5 +27,6 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 5px;
+  background-color: red;
 }
 </style>

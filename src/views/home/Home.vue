@@ -1,20 +1,27 @@
 <template>
-  <div id="home">
-    <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
-        </svg>
-      </template>
-      <template v-slot:middle>商品首页</template>
-    </nav-bar>
-    <div class="wrapper">
-      <div class="content">
+  <nav-bar>
+    <template v-slot:left>
+      <svg class="icon tab-bar-icon" aria-hidden="true">
+        <use xlink:href="#icon-jiantou"></use>
+      </svg>
+    </template>
+    <template v-slot:middle>商品首页</template>
+  </nav-bar>
+  <tab-control
+    v-show="isTabFixed"
+    :titles="tab_title"
+    @tabClick="TabClick"
+  ></tab-control>
+
+  <div class="wrapper">
+    <div class="content">
+      <div ref="banref">
         <div class="banners">
           <img src="~assets/logo.png" alt="" />
         </div>
         <recommend-view :recommends="recommends"></recommend-view>
-
+      </div>
+      <div>
         <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
         <goods-list :goodsData="ShowGoodsData"></goods-list>
       </div>
@@ -40,14 +47,16 @@ export default {
       ["新书", "new"],
       ["精选", "recommend"],
     ]);
+    let isTabFixed = ref(false);
     // define ata model
     let goodsData = reactive({
-      sales: { page: 0, data: [] },
-      new: { page: 0, data: [] },
-      recommend: { page: 0, data: [] },
+      sales: { page: 1, data: [] },
+      new: { page: 1, data: [] },
+      recommend: { page: 1, data: [] },
     });
     let recommends = ref([]);
     let bs = ref({});
+    let banref = ref(null);
     onMounted(() => {
       getHomeAllData().then((res) => {
         recommends.value = res.goods.data;
@@ -71,23 +80,38 @@ export default {
         scrollbar: true,
         // and so on
       });
+      console.log(banref.value);
       bs.on("scroll", (position) => {
-        // console.log(position.y);
+        isTabFixed.value = -position.y > banref.value.offsetHeight;
       });
       bs.on("pullingUp", (position) => {
-        console.log("up");
-        console.log(document.querySelector(".content").clientHeight);
+        let page = goodsData[currentType.value].page + 1;
+
+        getHomeGoods(currentType.value, page).then((res) => {
+          goodsData[currentType.value].data.push(...res.goods.data);
+          goodsData[currentType.value].page += 1;
+        });
+
+        // finish pullingUp and present data info
+        bs.finishPullUp();
         bs.refresh();
       });
     });
 
     let currentIndex = ref(0);
+    let currentType = computed(() => {
+      return queryMap.get(tab_title[currentIndex.value]);
+    });
     let ShowGoodsData = computed(() => {
-      return goodsData[queryMap.get(tab_title[currentIndex.value])].data;
+      return goodsData[currentType.value].data;
     });
 
     const TabClick = (index) => {
       currentIndex.value = index;
+
+      nextTick(() => {
+        bs && bs.refresh();
+      });
     };
 
     //listen any variable chnages
@@ -96,7 +120,14 @@ export default {
         bs && bs.refresh();
       });
     });
-    return { recommends, tab_title, TabClick, ShowGoodsData };
+    return {
+      recommends,
+      tab_title,
+      TabClick,
+      ShowGoodsData,
+      isTabFixed,
+      banref,
+    };
   },
   components: {
     NavBar,
@@ -109,26 +140,12 @@ export default {
 
 <style scoped lang="scss">
 .banners img {
-  width: 100%;
-  height: 25vh;
-  margin-top: 45px;
+
+}
+.wrapper {
+  overflow: hidden;
 }
 
-#home {
-  position: relative;
-  height: 100vh;
-
-  .wrapper {
-    position: absolute;
-    top: 45px;
-    bottom: 70px;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-  }
-
-  .content {
-    background-color: red;
-  }
+.content {
 }
 </style>

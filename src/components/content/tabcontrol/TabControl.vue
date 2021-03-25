@@ -46,6 +46,9 @@ export default {
 
   position: sticky;
   top: 45px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
 
   .tab-control-item {
     flex: 1;

@@ -41,7 +41,6 @@ export default {
 .recommend {
   display: flex;
   width: 100%;
-  height: 25vh;
   padding: 5px 0 5px;
   border-bottom: 8px solid #eee;
 }
