@@ -27,6 +27,5 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
   padding: 5px;
-  background-color: red;
 }
 </style>

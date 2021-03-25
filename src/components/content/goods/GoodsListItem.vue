@@ -24,14 +24,13 @@ export default {
 <style lang="scss" scoped>
 .goods-item {
   width: 46vw;
-  padding-bottom: 40px;
+  // padding-bottom: 40px;
   img {
     width: 100%;
     border-radius: 5px;
   }
 
   .goods-info {
-    overflow: hidden;
     p {
       overflow: hidden;
       text-overflow: ellipsis;

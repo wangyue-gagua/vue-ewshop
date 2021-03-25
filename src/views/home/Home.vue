@@ -27,6 +27,8 @@
       </div>
     </div>
   </div>
+
+  <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
 </template>
 
 <script>
@@ -34,6 +36,7 @@ import NavBar from "components/common/navbar/NavBar.vue";
 import RecommendView from "./childcompos/RecommendView.vue";
 import TabControl from "components/content/tabcontrol/TabControl.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
+import UpBack from "components/common/upback/UpBack.vue";
 import { getHomeAllData, getHomeGoods } from "network/home.js";
 import { computed, nextTick, onMounted, reactive, ref, watchEffect } from "vue";
 import BScroll from "better-scroll";
@@ -48,6 +51,7 @@ export default {
       ["精选", "recommend"],
     ]);
     let isTabFixed = ref(false);
+    let isShowBackTop = ref(false);
     // define ata model
     let goodsData = reactive({
       sales: { page: 1, data: [] },
@@ -55,7 +59,7 @@ export default {
       recommend: { page: 1, data: [] },
     });
     let recommends = ref([]);
-    let bs = ref({});
+    let bs = reactive({});
     let banref = ref(null);
     onMounted(() => {
       getHomeAllData().then((res) => {
@@ -75,26 +79,28 @@ export default {
       bs = new BScroll(".wrapper", {
         // ...
         probeType: 3,
-        pullUpLoad: true,
+        pullUpLoad: { threshold: 40 },
         wheel: true,
         scrollbar: true,
         // and so on
       });
-      console.log(banref.value);
       bs.on("scroll", (position) => {
-        isTabFixed.value = -position.y > banref.value.offsetHeight;
+        console.log(-position.y);
+        console.log(banref.value.offsetHeight);
+        isShowBackTop.value = isTabFixed.value =
+          -position.y > banref.value.offsetHeight;
       });
-      bs.on("pullingUp", (position) => {
+      bs.on("pullingUp", () => {
         let page = goodsData[currentType.value].page + 1;
-
         getHomeGoods(currentType.value, page).then((res) => {
           goodsData[currentType.value].data.push(...res.goods.data);
           goodsData[currentType.value].page += 1;
+
+          bs && bs.refresh();
+          bs.finishPullUp();
         });
 
         // finish pullingUp and present data info
-        bs.finishPullUp();
-        bs.refresh();
       });
     });
 
@@ -114,19 +120,25 @@ export default {
       });
     };
 
-    //listen any variable chnages
+    // listen any variable changes
     watchEffect(() => {
       nextTick(() => {
         bs && bs.refresh();
       });
     });
+
+    const bTop = () => {
+      bs.scrollTo(0, 0, 500);
+    }
     return {
       recommends,
       tab_title,
       TabClick,
       ShowGoodsData,
       isTabFixed,
+      isShowBackTop,
       banref,
+      bTop,
     };
   },
   components: {
@@ -134,13 +146,13 @@ export default {
     RecommendView,
     TabControl,
     GoodsList,
+    UpBack,
   },
 };
 </script>
 
 <style scoped lang="scss">
 .banners img {
-
 }
 .wrapper {
   overflow: hidden;
