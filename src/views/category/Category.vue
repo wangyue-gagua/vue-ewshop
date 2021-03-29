@@ -39,8 +39,8 @@
       <div class="goods-list">
         <div class="content">
           <van-card
-            v-for="item of showGoods"
-            :key="item.id"
+            v-for="(item, index) of showGoods"
+            :key="index"
             :num="item.collects_count"
             :tag="item.collects_count >= 3 ? 'hot' : 'new'"
             :price="item.price"
@@ -53,13 +53,15 @@
         </div>
       </div>
     </div>
+    <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
   </div>
 </template>
 
 <script>
 import NavBar from "components/common/navbar/NavBar.vue";
+import UpBack from "components/common/upback/UpBack.vue";
 import { getCategory, getCategoryGoods } from "network/category.js";
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, watchEffect, nextTick } from "vue";
 import BScroll from "better-scroll";
 export default {
   setup() {
@@ -69,6 +71,7 @@ export default {
     let active_tab = ref(0);
     let currentOrder = ref("sales");
     let currentId = ref(0);
+    let isShowBackTop = ref(false);
     // data model
     const goods = reactive({
       sales: { page: 1, list: [] },
@@ -87,6 +90,10 @@ export default {
       getCategoryGoods("comments_count", currentId.value).then((res) => {
         goods.comments_count.list = res.goods.data;
       });
+    };
+
+    const bTop = () => {
+      bs.scrollTo(0, 0, 500);
     };
 
     let bs = reactive({});
@@ -109,6 +116,25 @@ export default {
         // scrollbar: true,
         // and so on
       });
+      // register scroll event
+      bs.on("scroll", (position) => {
+        isShowBackTop.value = -position.y > 300;
+      });
+      // pullingUp for more data info
+      bs.on("pullingUp", () => {
+        console.log("pullingUp for more");
+        let page = goods[currentOrder.value].page + 1;
+        getCategoryGoods(currentOrder.value, currentId.value, page).then(
+          (res) => {
+            goods[currentOrder.value].list.push(...res.goods.data);
+            goods[currentOrder.value].page += 1;
+          }
+        );
+        // finish pullingUp and present data info
+        bs.finishPullUp();
+        bs && bs.refresh();
+        console.log("current page:" + page);
+      });
     });
 
     const showGoods = computed(() => {
@@ -120,7 +146,11 @@ export default {
       currentOrder.value = orders[index];
       getCategoryGoods(currentOrder.value, currentId.value).then((res) => {
         goods[currentOrder.value].list = res.goods.data;
+        nextTick(() => {
+          bs && bs.refresh();
+        });
       });
+
       console.log(orders[index]);
     };
     // get goods by category
@@ -130,6 +160,12 @@ export default {
       console.log(currentId);
     };
 
+    watchEffect(() => {
+      nextTick(() => {
+        bs && bs.refresh();
+      });
+    });
+
     return {
       active,
       activeName,
@@ -138,11 +174,14 @@ export default {
       TabClick,
       getGoods,
       showGoods,
-      bs
+      bs,
+      bTop,
+      isShowBackTop,
     };
   },
   components: {
     NavBar,
+    UpBack,
   },
 };
 </script>

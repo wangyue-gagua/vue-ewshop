@@ -79,7 +79,7 @@ export default {
         // ...
         probeType: 3,
         click: true,
-        pullUpLoad: {threshold:20},
+        pullUpLoad: { threshold: 20 },
         // wheel: true,
         // scrollbar: true,
         // and so on
@@ -88,15 +88,15 @@ export default {
         isShowBackTop.value = isTabFixed.value =
           -position.y > banref.value.offsetHeight;
       });
+      // pullingUp for more data info
       bs.on("pullingUp", () => {
         let page = goodsData[currentType.value].page + 1;
         getHomeGoods(currentType.value, page).then((res) => {
           goodsData[currentType.value].data.push(...res.goods.data);
           goodsData[currentType.value].page += 1;
-
-          bs.finishPullUp();
-          bs && bs.refresh();
         });
+        bs.finishPullUp();
+        bs && bs.refresh();
 
         // finish pullingUp and present data info
       });
@@ -156,7 +156,7 @@ export default {
 .banners img {
 }
 .wrapper {
-  overflow: hidden;
+  // overflow: hidden;
   height: 100vh;
 }
 
