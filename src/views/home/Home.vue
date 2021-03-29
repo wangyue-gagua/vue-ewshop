@@ -1,34 +1,30 @@
 <template>
-  <div>
-    <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
-        </svg>
-      </template>
-      <template v-slot:middle>商品首页</template>
-    </nav-bar>
-    <tab-control
-      v-show="isTabFixed"
-      :titles="tab_title"
-      @tabClick="TabClick"
-    ></tab-control>
+  <nav-bar>
+    <template v-slot:left>
+      <svg class="icon tab-bar-icon" aria-hidden="true">
+        <use xlink:href="#icon-jiantou"></use>
+      </svg>
+    </template>
+    <template v-slot:middle>商品首页</template>
+  </nav-bar>
+  <tab-control
+    v-show="isTabFixed"
+    :titles="tab_title"
+    @tabClick="TabClick"
+  ></tab-control>
 
-    <div class="wrapper">
-      <div class="content">
-        <div ref="banref">
-          <HomeSwiper :slides="slides"></HomeSwiper>
-          <recommend-view :recommends="recommends"></recommend-view>
-        </div>
-        <div>
-          <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
-          <goods-list :goodsData="ShowGoodsData"></goods-list>
-        </div>
+  <div class="wrapper">
+    <div class="content">
+      <div ref="banref">
+        <HomeSwiper :slides="slides"></HomeSwiper>
+        <recommend-view :recommends="recommends"></recommend-view>
       </div>
+      <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
+      <goods-list :goodsData="ShowGoodsData"></goods-list>
     </div>
-
-    <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
   </div>
+
+  <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
 </template>
 
 <script>
@@ -79,17 +75,16 @@ export default {
       });
 
       // build better scroll object
-      bs = new BScroll(".wrapper", {
+      bs = new BScroll(document.querySelector(".wrapper"), {
         // ...
         probeType: 3,
-        pullUpLoad: { threshold: 40 },
-        wheel: true,
-        scrollbar: true,
+        click: true,
+        pullUpLoad: {threshold:20},
+        // wheel: true,
+        // scrollbar: true,
         // and so on
       });
       bs.on("scroll", (position) => {
-        console.log(-position.y);
-        console.log(banref.value.offsetHeight);
         isShowBackTop.value = isTabFixed.value =
           -position.y > banref.value.offsetHeight;
       });
@@ -99,8 +94,8 @@ export default {
           goodsData[currentType.value].data.push(...res.goods.data);
           goodsData[currentType.value].page += 1;
 
-          bs && bs.refresh();
           bs.finishPullUp();
+          bs && bs.refresh();
         });
 
         // finish pullingUp and present data info
@@ -143,6 +138,7 @@ export default {
       isShowBackTop,
       banref,
       bTop,
+      bs,
     };
   },
   components: {
@@ -161,6 +157,7 @@ export default {
 }
 .wrapper {
   overflow: hidden;
+  height: 100vh;
 }
 
 .content {

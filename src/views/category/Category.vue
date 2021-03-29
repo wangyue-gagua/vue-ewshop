@@ -42,7 +42,7 @@
             v-for="item of showGoods"
             :key="item.id"
             :num="item.collects_count"
-            :tag="item.collects_count>=3 ? 'hot': 'new' "
+            :tag="item.collects_count >= 3 ? 'hot' : 'new'"
             :price="item.price"
             :desc="item.updated_at"
             :title="item.title"
@@ -60,6 +60,7 @@
 import NavBar from "components/common/navbar/NavBar.vue";
 import { getCategory, getCategoryGoods } from "network/category.js";
 import { ref, reactive, onMounted, computed } from "vue";
+import BScroll from "better-scroll";
 export default {
   setup() {
     const active = ref(0);
@@ -88,6 +89,8 @@ export default {
       });
     };
 
+    let bs = reactive({});
+
     onMounted(() => {
       getCategory().then((res) => {
         categories.value = res.categories;
@@ -95,6 +98,16 @@ export default {
 
       getCategoryGoods("sales", currentId.value).then((res) => {
         goods.sales.list = res.goods.data;
+      });
+
+      bs = new BScroll(document.querySelector(".goods-list"), {
+        // ...
+        probeType: 3,
+        click: true,
+        pullUpLoad: true,
+        // wheel: true,
+        // scrollbar: true,
+        // and so on
       });
     });
 
@@ -125,6 +138,7 @@ export default {
       TabClick,
       getGoods,
       showGoods,
+      bs
     };
   },
   components: {
