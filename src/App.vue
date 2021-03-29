@@ -21,9 +21,11 @@
       <div>分类</div></router-link
     >
     <router-link to="/shopcart" class="tab-bar-item">
-      <svg class="icon tab-bar-icon" aria-hidden="true">
-        <use xlink:href="#icon-shop-cart-"></use>
-      </svg>
+      <van-badge :content="2" max="9">
+        <svg class="icon tab-bar-icon" aria-hidden="true">
+          <use xlink:href="#icon-shop-cart-"></use>
+        </svg>
+      </van-badge>
       <div>购物车</div></router-link
     >
     <router-link to="/profile" class="tab-bar-item">

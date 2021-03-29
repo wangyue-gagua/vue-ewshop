@@ -6,9 +6,9 @@ export  function getHomeAllData() {
         
     })
 }
-export function getHomeGoods(cato='sales', page=1) {
+export function getHomeGoods(cate='sales', page=1) {
     return request({
-        url: '/api/index?' + cato +'=1&page=' + page,
+        url: '/api/index?' + cate +'=1&page=' + page,
         
     })
 }

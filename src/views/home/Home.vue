@@ -1,32 +1,34 @@
 <template>
-  <nav-bar>
-    <template v-slot:left>
-      <svg class="icon tab-bar-icon" aria-hidden="true">
-        <use xlink:href="#icon-jiantou"></use>
-      </svg>
-    </template>
-    <template v-slot:middle>商品首页</template>
-  </nav-bar>
-  <tab-control
-    v-show="isTabFixed"
-    :titles="tab_title"
-    @tabClick="TabClick"
-  ></tab-control>
+  <div>
+    <nav-bar>
+      <template v-slot:left>
+        <svg class="icon tab-bar-icon" aria-hidden="true">
+          <use xlink:href="#icon-jiantou"></use>
+        </svg>
+      </template>
+      <template v-slot:middle>商品首页</template>
+    </nav-bar>
+    <tab-control
+      v-show="isTabFixed"
+      :titles="tab_title"
+      @tabClick="TabClick"
+    ></tab-control>
 
-  <div class="wrapper">
-    <div class="content">
-      <div ref="banref">
-        <HomeSwiper :slides="slides"></HomeSwiper>
-        <recommend-view :recommends="recommends"></recommend-view>
-      </div>
-      <div>
-        <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
-        <goods-list :goodsData="ShowGoodsData"></goods-list>
+    <div class="wrapper">
+      <div class="content">
+        <div ref="banref">
+          <HomeSwiper :slides="slides"></HomeSwiper>
+          <recommend-view :recommends="recommends"></recommend-view>
+        </div>
+        <div>
+          <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
+          <goods-list :goodsData="ShowGoodsData"></goods-list>
+        </div>
       </div>
     </div>
-  </div>
 
-  <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
+    <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
+  </div>
 </template>
 
 <script>
