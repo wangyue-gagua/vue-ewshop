@@ -39,6 +39,7 @@
       <div class="goods-list">
         <div class="content">
           <van-card
+            @click="goDetail(item.id)"
             v-for="(item, index) of showGoods"
             :key="index"
             :num="item.collects_count"
@@ -62,6 +63,7 @@ import NavBar from "components/common/navbar/NavBar.vue";
 import UpBack from "components/common/upback/UpBack.vue";
 import { getCategory, getCategoryGoods } from "network/category.js";
 import { ref, reactive, onMounted, computed, watchEffect, nextTick } from "vue";
+import { useRouter } from "vue-router";
 import BScroll from "better-scroll";
 export default {
   setup() {
@@ -72,6 +74,7 @@ export default {
     let currentOrder = ref("sales");
     let currentId = ref(0);
     let isShowBackTop = ref(false);
+    let router = useRouter();
     // data model
     const goods = reactive({
       sales: { page: 1, list: [] },
@@ -177,6 +180,12 @@ export default {
       bs,
       bTop,
       isShowBackTop,
+      goDetail: (id) => {
+        router.push({
+          path: "/detail",
+          query: { id },
+        });
+      },
     };
   },
   components: {

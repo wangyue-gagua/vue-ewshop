@@ -1,14 +1,15 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" @click="goDetail(good.id)">
     <img v-lazy="good.cover_url" alt="" />
     <div class="goods-info">
-      <p>{{good.title}}</p>
-      <span class="price"><small>￥</small>{{good.price}}</span>
-      <span class="collect">{{good.collects_count}}</span>
+      <p>{{ good.title }}</p>
+      <span class="price"><small>￥</small>{{ good.price }}</span>
+      <span class="collect">{{ good.collects_count }}</span>
     </div>
   </div>
 </template>
 <script>
+import { useRouter} from 'vue-router';
 export default {
   name: "GoodsListItem",
   props: {
@@ -16,8 +17,20 @@ export default {
       type: Object,
       default() {
         return {};
-      }
-    }}
+      },
+    },
+  },
+  setup() {
+    let router = useRouter();
+    return {
+      goDetail: (id) => {
+        router.push({
+          path: "/detail",
+          query: { id },
+        });
+      },
+    };
+  },
 };
 </script>
 

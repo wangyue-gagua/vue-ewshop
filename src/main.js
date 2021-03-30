@@ -3,9 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-import { Swipe, SwipeItem, Lazyload, Badge, Tab, Tabs, Sidebar, SidebarItem, Collapse, CollapseItem, Card } from "vant";
+import { Image as VanImage, Tag, Button, Swipe, SwipeItem, Lazyload, Badge, Tab, Tabs, Sidebar, SidebarItem, Collapse, CollapseItem, Card } from "vant";
 
 createApp(App)
+  .use(VanImage).use(Tag).use(Button)
   .use(Tab).use(Tabs)
   .use(Swipe).use(SwipeItem)
   .use(Lazyload).use(Badge)

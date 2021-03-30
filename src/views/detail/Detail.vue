@@ -8,24 +8,76 @@
       </template>
       <template v-slot:middle>商品详情: {{ id }}</template>
     </nav-bar>
+
+    <van-image
+      style="margin-top: 50px"
+      width="200"
+      lazy-load
+      :src="goods.cover_url"
+    />
+
+    <van-card
+      style="text-align: left"
+      :num="goods.stock"
+      :price="goods.price"
+      :desc="goods.description"
+      :title="goods.title"
+    >
+      <template #tags>
+        <van-tag plain type="danger">标签</van-tag>
+        <van-tag plain type="danger">标签</van-tag>
+      </template>
+      <template #footer>
+        <van-button type="warning">添加</van-button>
+        <van-button type="danger">购买</van-button>
+      </template>
+    </van-card>
+
+    <van-tabs v-model:active="active">
+      <van-tab title="概述"
+        ><div class="content" v-html="goods.details"></div
+      ></van-tab>
+      <van-tab title="热评">内容 2</van-tab>
+      <van-tab title="相关图书"
+        ><goods-list :goodsData="like_goods"></goods-list
+      ></van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
 import NavBar from "components/common/navbar/NavBar.vue";
+import GoodsList from "components/content/goods/GoodsList.vue";
 import { useRoute } from "vue-router";
-import {ref} from 'vue'
+import { getGoodDetail } from "network/detail.js";
+import { ref, onMounted, reactive, toRefs } from "vue";
 export default {
+  name: "Detail",
   components: {
     NavBar,
+    GoodsList,
   },
   setup() {
     const route = useRoute();
     let id = ref(0);
-
     id.value = route.query.id;
 
-    return { id };
+    const active = ref(0);
+
+    let book = reactive({
+      goods: {},
+      like_goods: [],
+    });
+
+    onMounted(() => {
+      getGoodDetail(id.value).then((res) => {
+        console.log("goodDetail:");
+        book.goods = res.goods;
+        book.like_goods = res.like_goods;
+      });
+    });
+    console.log({ ...toRefs(book) });
+    return { id, active, ...toRefs(book) };
   },
 };
 </script>
