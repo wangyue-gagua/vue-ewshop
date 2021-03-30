@@ -14,3 +14,9 @@ export function Login(data) {
         data: data
     })
 }
+export function Logout() {
+    return request({
+        url: '/api/auth/logout',
+        method: 'POST',
+    })
+}

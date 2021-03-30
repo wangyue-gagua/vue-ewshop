@@ -1,12 +1,16 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
+import mutations from "./mutations.js";
+import actions from "./actions.js";
+import getters from "./getters.js";
 
+const state = {
+  user: {
+    isLoggedIn: window.localStorage.getItem('access_token') ? true : false,
+  },
+};
 export default createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+  state,
+  mutations,
+  actions,
+  getters,
+});

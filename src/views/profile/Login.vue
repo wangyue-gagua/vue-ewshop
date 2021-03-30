@@ -58,11 +58,13 @@ import { Login } from "network/user.js";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { Notify, Toast } from "vant";
+import { useStore} from 'vuex'
 export default {
   name: "Login",
   components: { NavBar },
   setup() {
     let router = useRouter();
+    let store = useStore();
     const userInfo = reactive({
       password: "",
       email: "",
@@ -72,7 +74,8 @@ export default {
         // store access token to local storage
         window.localStorage.setItem('access_token', res.access_token);
         // vuex islogin
-
+        store.commit('setIsloggedIn', true);
+        
         Toast.success("登录成功");
         setTimeout(() => {
           router.go(-1);

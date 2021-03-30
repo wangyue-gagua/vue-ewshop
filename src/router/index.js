@@ -1,91 +1,101 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
+import  store  from "../store";
+import {Notify} from 'vant'
 
-const Category = () => import('../views/category/Category.vue')
-const Detail = () => import('../views/detail/Detail.vue')
-const Home = () => import('../views/home/Home.vue')
-const Profile = () => import('../views/profile/Profile.vue')
-const ShopCart = () => import('../views/shopcart/ShopCart.vue')
-const Register = () => import('../views/profile/Register.vue')
-const Login = () => import('../views/profile/Login.vue')
+const Category = () => import("../views/category/Category.vue");
+const Detail = () => import("../views/detail/Detail.vue");
+const Home = () => import("../views/home/Home.vue");
+const Profile = () => import("../views/profile/Profile.vue");
+const ShopCart = () => import("../views/shopcart/ShopCart.vue");
+const Register = () => import("../views/profile/Register.vue");
+const Login = () => import("../views/profile/Login.vue");
 const routes = [
   {
-    path: '/',
-    name: 'DefaultHome',
+    path: "/",
+    name: "DefaultHome",
     component: Home,
     meta: {
-      title: 'guagua-book',
-    }
+      title: "guagua-book",
+    },
   },
   {
-    path: '/home',
-    name: 'Home',
+    path: "/home",
+    name: "Home",
     component: Home,
     meta: {
-      title: 'guagua-book',
-    }
+      title: "guagua-book",
+    },
   },
   {
-    path: '/category',
-    name: 'Category',
+    path: "/category",
+    name: "Category",
     component: Category,
     meta: {
-      title: 'guagua-book category',
-    }
+      title: "guagua-book category",
+    },
   },
   {
-    path: '/detail',
-    name: 'Detail',
+    path: "/detail",
+    name: "Detail",
     component: Detail,
     meta: {
-      title: 'guagua-book detail',
-    }
+      title: "guagua-book detail",
+    },
   },
   {
-    path: '/profile',
-    name: 'Profile',
+    path: "/profile",
+    name: "Profile",
     component: Profile,
     meta: {
-      title: 'guagua-book user',
-    }
+      title: "guagua-book user",
+      isAuthRequired: true,
+    },
   },
   {
-    path: '/shopcart',
-    name: 'ShopCart',
+    path: "/shopcart",
+    name: "ShopCart",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: ShopCart,
     meta: {
-      title: 'guagua-book shopcart',
-    }
+      title: "guagua-book shopcart",
+      isAuthRequired: true,
+    },
   },
   {
-    path: '/register',
-    name: 'Register',
+    path: "/register",
+    name: "Register",
     component: Register,
     meta: {
-      title: 'guagua-book register',
-    }
+      title: "guagua-book register",
+    },
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: Login,
     meta: {
-      title: 'guagua-book Login',
-    }
+      title: "guagua-book Login",
+    },
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-router.beforeEach((to, from, next)=>{
+router.beforeEach((to, from, next) => {
   // if not authentication for login
-  next();
-  document.title = to.meta.title
-})
+  if (to.meta.isAuthRequired && store.state.user.isLoggedIn === false) {
+    Notify('请先登录')
+    return next("/login");
+  } else {
+    next();
+  }
 
-export default router
+  document.title = to.meta.title;
+});
+
+export default router;
