@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { Notify } from 'vant';
 export function request(config) {
     const instance = axios.create({
         baseURL: 'https://api.shop.eduwork.cn',
@@ -21,6 +21,8 @@ export function request(config) {
     }, err =>{
         // if need authentication login
         // handling error message
+        console.log(err.response.data);
+        Notify(err.response.data.errors[Object.keys(err.response.data.errors)[0]][0])
     })
 
     return instance(config);

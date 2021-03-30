@@ -5,6 +5,8 @@ const Detail = () => import('../views/detail/Detail.vue')
 const Home = () => import('../views/home/Home.vue')
 const Profile = () => import('../views/profile/Profile.vue')
 const ShopCart = () => import('../views/shopcart/ShopCart.vue')
+const Register = () => import('../views/profile/Register.vue')
+const Login = () => import('../views/profile/Login.vue')
 const routes = [
   {
     path: '/',
@@ -56,7 +58,23 @@ const routes = [
     meta: {
       title: 'guagua-book shopcart',
     }
-  }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+    meta: {
+      title: 'guagua-book register',
+    }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      title: 'guagua-book Login',
+    }
+  },
 ]
 
 const router = createRouter({
