@@ -29,7 +29,7 @@ export function request(config) {
       // if need authentication login
       if (err.response.status === 401) {
           Toast.fail('请先登录')
-            setInterval(() =>{
+            setTimeout(() =>{
               router.push({path: '/login'})
             }, 100)
       }

@@ -35,7 +35,7 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
 
-      <div class="login" @click="$router.push({ path: '/login' })">
+      <div class="login" @click="$router.push({ path: '/register' })">
         没有账号，前往注册
       </div>
       <div style="margin: 16px">
@@ -58,7 +58,7 @@ import { Login } from "network/user.js";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { Notify, Toast } from "vant";
-import { useStore} from 'vuex'
+import { useStore } from "vuex";
 export default {
   name: "Login",
   components: { NavBar },
@@ -72,10 +72,10 @@ export default {
     const onSubmit = (values) => {
       Login(userInfo).then((res) => {
         // store access token to local storage
-        window.localStorage.setItem('access_token', res.access_token);
+        window.localStorage.setItem("access_token", res.access_token);
         // vuex islogin
-        store.commit('setIsloggedIn', true);
-        
+        store.commit("setIsloggedIn", true);
+
         Toast.success("登录成功");
         setTimeout(() => {
           router.go(-1);

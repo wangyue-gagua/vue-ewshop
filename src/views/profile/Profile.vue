@@ -17,6 +17,7 @@
 import NavBar from "components/common/navbar/NavBar.vue";
 import {Logout} from "network/user.js";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { Toast } from "vant";
 export default {
   name: 'Profile',
@@ -25,11 +26,12 @@ export default {
   },
   setup() {
     let router = useRouter();
+    let store = useStore();
     const logout = () => {
       Logout().then((res) => {
         if (res.status == 204) {
           Toast.success("成功退出");
-          window.localStorage.setItem("access_token", "");
+          window.localStorage.removeItem("access_token");
           store.commit('setIsloggedIn', false);
           setTimeout(() => {
             router.push({ path: "/login" });
