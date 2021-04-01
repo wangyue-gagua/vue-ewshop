@@ -20,3 +20,8 @@ export function Logout() {
         method: 'POST',
     })
 }
+export function getUser() {
+    return request({
+        url: '/api/user',
+    })
+}
