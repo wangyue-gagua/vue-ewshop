@@ -6,6 +6,7 @@ import getters from "./getters.js";
 const state = {
   user: {
     isLoggedIn: window.localStorage.getItem('access_token') ? true : false,
+    countCart: 0,
   },
 };
 export default createStore({

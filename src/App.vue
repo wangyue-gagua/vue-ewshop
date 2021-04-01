@@ -1,5 +1,5 @@
 <template>
-<router-view/>
+  <router-view />
   <!-- <router-view v-slot="{ Component }">
     <transition>
       <keep-alive>
@@ -22,7 +22,7 @@
       <div>分类</div></router-link
     >
     <router-link to="/shopcart" class="tab-bar-item">
-      <van-badge :content="2" max="9">
+      <van-badge :content="$store.state.user.countCart" max="9">
         <svg class="icon tab-bar-icon" aria-hidden="true">
           <use xlink:href="#icon-shop-cart-"></use>
         </svg>
@@ -38,6 +38,18 @@
   </div>
 </template>
 
+<script>
+import {onMounted} from 'vue'
+import {useStore} from 'vuex'
+export default {
+  setup() {
+    let store = useStore();
+    onMounted(() => {
+      store.dispatch("updateCart");
+    });
+  },
+};
+</script>
 <style lang="scss">
 @import "./assets/css/base.css";
 #app {

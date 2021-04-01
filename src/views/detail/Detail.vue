@@ -28,8 +28,8 @@
         <van-tag plain type="danger">标签</van-tag>
       </template>
       <template #footer>
-        <van-button type="warning">添加</van-button>
-        <van-button type="danger">购买</van-button>
+        <van-button type="warning" @click="handleAddCart">添加</van-button>
+        <van-button type="danger" @click="goToCart">购买</van-button>
       </template>
     </van-card>
 
@@ -48,9 +48,12 @@
 <script>
 import NavBar from "components/common/navbar/NavBar.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { getGoodDetail } from "network/detail.js";
+import { addCart } from "network/cart.js";
 import { ref, onMounted, reactive, toRefs } from "vue";
+import { Toast } from "vant";
 export default {
   name: "Detail",
   components: {
@@ -59,6 +62,8 @@ export default {
   },
   setup() {
     const route = useRoute();
+    let router = useRouter();
+    let store = useStore();
     let id = ref(0);
     id.value = route.query.id;
 
@@ -71,16 +76,39 @@ export default {
 
     onMounted(() => {
       getGoodDetail(id.value).then((res) => {
-        console.log("goodDetail:");
         book.goods = res.goods;
         book.like_goods = res.like_goods;
       });
     });
-    console.log({ ...toRefs(book) });
-    return { id, active, ...toRefs(book) };
+
+    const handleAddCart = () => {
+      addCart({ goods_id: id.value, num: 1 }).then((res) => {
+        if (res.status === 201 || res.status === 204) {
+          Toast.success("添加购物车成功");
+          store.dispatch("updateCart");
+        }
+      });
+    };
+
+    const goToCart = () => {
+      addCart({ goods_id: id.value, num: 1 }).then((res) => {
+        if (res.status === 201 || res.status === 204) {
+          Toast.success("添加成功, 跳转至购物车");
+          router.push({ path: "/shopcart" });
+          store.dispatch("updateCart");
+        }
+      });
+    };
+
+    return { id, active, ...toRefs(book), handleAddCart, goToCart };
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+.content {
+  img {
+    width: 100vw;
+  }
+}
 </style>
