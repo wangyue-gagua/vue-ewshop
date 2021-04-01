@@ -23,7 +23,7 @@
               :desc="item.goods.description"
               :title="item.goods.title"
               class="goods-card"
-              thumb="https://img.yzcdn.cn/vant/cat.jpeg"
+              :thumb="item.goods.cover_url"
             >
               <template #footer
                 ><van-stepper
