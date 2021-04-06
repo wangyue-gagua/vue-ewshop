@@ -87,6 +87,7 @@ const routes = [
     component: AddressList,
     meta: {
       title: "guagua-book Address",
+      isAuthRequired: true,
     },
   },
   {
@@ -95,6 +96,7 @@ const routes = [
     component: AddressEdit,
     meta: {
       title: "guagua-book AddressEdit",
+      isAuthRequired: true,
     },
   },
 ];

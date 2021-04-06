@@ -16,10 +16,11 @@ export function deleteAddress(id) {
   });
 }
 // 编辑地址
-export function editAddress(id) {
+export function editAddress(id, params) {
   return request({
     url: "/api/address/" + id,
     method: "PUT",
+    params,
   });
 }
 // 地址列表
