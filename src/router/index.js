@@ -9,6 +9,8 @@ const Profile = () => import("../views/profile/Profile.vue");
 const ShopCart = () => import("../views/shopcart/ShopCart.vue");
 const Register = () => import("../views/profile/Register.vue");
 const Login = () => import("../views/profile/Login.vue");
+const AddressList = () => import("../views/profile/Address/AddressList.vue")
+const AddressEdit = () => import("../views/profile/Address/AddressEdit.vue")
 const routes = [
   {
     path: "/",
@@ -77,6 +79,22 @@ const routes = [
     component: Login,
     meta: {
       title: "guagua-book Login",
+    },
+  },
+  {
+    path: "/address-list",
+    name: "AddressList",
+    component: AddressList,
+    meta: {
+      title: "guagua-book Address",
+    },
+  },
+  {
+    path: "/address-edit",
+    name: "AddressEdit",
+    component: AddressEdit,
+    meta: {
+      title: "guagua-book AddressEdit",
     },
   },
 ];

@@ -34,7 +34,7 @@
           <span>账号管理</span>
           <van-icon name="arrow" />
         </li>
-        <li class="van-hairline--bottom" @click="jumpTo('/address')">
+        <li class="van-hairline--bottom" @click="jumpTo('/address-list')">
           <span>地址管理</span>
           <van-icon name="arrow" />
         </li>
