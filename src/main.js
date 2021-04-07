@@ -23,7 +23,10 @@ import {
   Checkbox,
   CheckboxGroup,
   SubmitBar,
-  Icon
+  Icon,
+  Popup,
+  Grid,
+  GridItem,
 } from "vant";
 
 createApp(App)
@@ -47,6 +50,9 @@ createApp(App)
   .use(CheckboxGroup)
   .use(SubmitBar)
   .use(Icon)
+  .use(Popup)
+  .use(Grid)
+  .use(GridItem)
   .use(store)
   .use(router)
   .mount("#app");

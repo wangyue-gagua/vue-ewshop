@@ -37,6 +37,25 @@
     >
       <span>商品金额</span>
     </van-submit-bar>
+
+    <van-popup
+      closeable
+      v-model:show="showPay"
+      :close-on-click-overlay="false"
+      position="bottom"
+      :style="{ height: '40%' }"
+    >
+      <van-grid :border="false" :column-num="1">
+        <van-grid-item>
+          支付宝二维码
+          <van-image :src="ali_qr" />
+        </van-grid-item>
+        <!-- <van-grid-item>
+          微信支付二维码
+          <van-image :src="wx_qr" />
+        </van-grid-item> -->
+      </van-grid>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -50,7 +69,7 @@ import {
 import { reactive, onMounted, toRefs, computed } from "vue";
 import { Toast } from "vant";
 import { useRoute, useRouter } from "vue-router";
-import {useStore} from "vuex";
+import { useStore } from "vuex";
 export default {
   name: "CreateOrder",
   components: {
@@ -70,13 +89,16 @@ export default {
         county: "",
         address: "",
       },
+      showPay: false,
+      orderId: "",
+      ali_qr: "",
+      wx_qr: "",
     });
 
     const init = () => {
       Toast.loading({ message: "加载中...", forbidClick: true });
 
       getOrderPreview().then((res) => {
-        console.log(res);
         let address = res.address.filter((item) => item.is_default === 1);
         if (address.length === 0) {
           state.address = {
@@ -112,7 +134,29 @@ export default {
       };
       createOrder(params).then((res) => {
         Toast.success("创建成功");
-        store.dispatch("updateCart")
+        store.dispatch("updateCart");
+        state.showPay = true;
+
+        state.orderId = res.id;
+        //AliPay
+        payOrder(state.orderId, { type: "aliyun" }).then((res) => {
+          state.ali_qr = res.qr_code_url;
+        });
+        //Wechat
+        // payOrder(state.orderId, { type: "wechat" }).then((res) => {
+        //     console.log('wechat');
+        //   console.log(res);
+        // });
+
+        // 轮询请求
+        const timer = setInterval(() => {
+          payOrderStatus(state.orderId).then((res) => {
+            if (res === 2) {
+              clearInterval(timer);
+              router.push({ path: "/order", query: { status: 2 } });
+            }
+          });
+        }, 2000);
       });
     };
     return {
