@@ -57,12 +57,11 @@ import { Logout, getUser } from "network/user.js";
 import { onMounted, toRefs} from "vue"
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { Toast, Icon } from "vant";
+import { Toast } from "vant";
 export default {
   name: "Profile",
   components: {
     NavBar,
-    "van-icon": Icon,
   },
   setup() {
     let router = useRouter();

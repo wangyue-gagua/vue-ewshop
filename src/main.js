@@ -22,6 +22,8 @@ import {
   Field,
   Checkbox,
   CheckboxGroup,
+  SubmitBar,
+  Icon
 } from "vant";
 
 createApp(App)
@@ -38,11 +40,13 @@ createApp(App)
   .use(SidebarItem)
   .use(Collapse)
   .use(CollapseItem)
+  .use(Field)
+  .use(Card)
   .use(Form)
   .use(Checkbox)
   .use(CheckboxGroup)
-  .use(Field)
-  .use(Card)
+  .use(SubmitBar)
+  .use(Icon)
   .use(store)
   .use(router)
   .mount("#app");

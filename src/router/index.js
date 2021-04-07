@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import  store  from "../store";
-import {Notify} from 'vant'
+import store from "../store";
+import { Notify } from "vant";
 
 const Category = () => import("../views/category/Category.vue");
 const Detail = () => import("../views/detail/Detail.vue");
@@ -9,8 +9,9 @@ const Profile = () => import("../views/profile/Profile.vue");
 const ShopCart = () => import("../views/shopcart/ShopCart.vue");
 const Register = () => import("../views/profile/Register.vue");
 const Login = () => import("../views/profile/Login.vue");
-const AddressList = () => import("../views/profile/Address/AddressList.vue")
-const AddressEdit = () => import("../views/profile/Address/AddressEdit.vue")
+const AddressList = () => import("../views/profile/Address/AddressList.vue");
+const AddressEdit = () => import("../views/profile/Address/AddressEdit.vue");
+const CreateOrder = () => import("../views/shopcart/CreateOrder.vue");
 const routes = [
   {
     path: "/",
@@ -99,6 +100,15 @@ const routes = [
       isAuthRequired: true,
     },
   },
+  {
+    path: "/createOrder",
+    name: "CreateOrder",
+    component: CreateOrder,
+    meta: {
+      title: "guagua-book CreateOrder",
+      isAuthRequired: true,
+    },
+  },
 ];
 
 const router = createRouter({
@@ -109,7 +119,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // if not authentication for login
   if (to.meta.isAuthRequired && store.state.user.isLoggedIn === false) {
-    Notify('请先登录')
+    Notify("请先登录");
     return next("/login");
   } else {
     next();

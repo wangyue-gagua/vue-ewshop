@@ -1,7 +1,7 @@
 import { request } from "./request";
 
 // 提交订单
-export function addOrder(params) {
+export function createOrder(params) {
     //address_id: id
   return request({
     url: "/api/orders",
@@ -41,7 +41,7 @@ export function getOrderDetail(order, params) {
   });
 }
 // order list
-export function addOrder(params) {
+export function getOrderList(params) {
   return request({
     url: "/api/orders",
     method: "GET",
@@ -63,7 +63,7 @@ export function conformOrder(order) {
   });
 }
 // comment goods
-export function conformOrder(order, params) {
+export function commentOrder(order, params) {
   return request({
     url: `/api/orders/${order}/comment`,
     method: "POST",
