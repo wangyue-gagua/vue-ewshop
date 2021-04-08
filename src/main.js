@@ -4,6 +4,8 @@ import router from "./router";
 import store from "./store";
 
 import {
+  List,
+  PullRefresh,
   Image as VanImage,
   Tag,
   Button,
@@ -31,6 +33,8 @@ import {
 } from "vant";
 
 createApp(App)
+  .use(List)
+  .use(PullRefresh)
   .use(VanImage)
   .use(Tag)
   .use(Button)

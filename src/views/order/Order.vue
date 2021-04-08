@@ -8,39 +8,125 @@
       </template>
       <template v-slot:middle>订单列表</template>
     </nav-bar>
-    <van-tabs v-model:active="active">
+    <van-tabs v-model:active="active" @click="onTabChange">
       <van-tab title="全部"></van-tab>
-      <van-tab title="待付款">内容 2</van-tab>
-      <van-tab title="已支付">内容 3</van-tab>
-      <van-tab title="发货">内容 4</van-tab>
-      <van-tab title="交易完成">内容 4</van-tab>
-      <van-tab title="过期">内容 4</van-tab>
+      <van-tab title="待付款"></van-tab>
+      <van-tab title="已支付"></van-tab>
+      <van-tab title="发货"></van-tab>
+      <van-tab title="交易完成"></van-tab>
+      <van-tab title="过期"></van-tab>
     </van-tabs>
 
     <div class="content">
-      <div>订单号： 1212</div>
-      <div>创建时间：111</div>
-      <van-card
-        num="2"
-        price="2.00"
-        desc="描述信息"
-        title="商品标题"
-        thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
-      />
+      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+        <van-list
+          v-model:loading="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="onLoad"
+        >
+          <div
+            class="order-info"
+            @click="goTo(item.id)"
+            v-for="item of list"
+            :key="item.id"
+          >
+            <div>订单号： {{ item.order_no }}</div>
+            <div>创建时间：{{ item.created_at }}</div>
+            <van-card
+              v-for="good of item.orderDetails.data"
+              :key="good.id"
+              :num="good.num"
+              :price="good.price"
+              :desc="good.goods.description"
+              :title="good.goods.title"
+              :thumb="good.goods.cover_url"
+            />
+          </div>
+        </van-list>
+      </van-pull-refresh>
     </div>
   </div>
 </template>
 <script>
 import NavBar from "components/common/navbar/NavBar.vue";
-import { ref } from "vue";
+import { getOrderList } from "network/order";
+import { ref, reactive, onMounted, toRefs } from "vue";
+import { useRouter } from "vue-router";
 export default {
   name: "Order",
   components: {
     NavBar,
   },
   setup() {
+    const router = useRouter();
     const active = ref(0);
-    return { active };
+    const state = reactive({
+      list: [],
+      loading: false,
+      finished: false,
+      refreshing: false,
+      page: 1,
+      totalPage: 0,
+      status: 0,
+    });
+
+    const onLoad = () => {
+      if (!state.refreshing && state.page < state.totalPage) {
+        state.page += 1;
+        console.log(state.page + "@@@@@@");
+      }
+      if (state.refreshing) {
+        state.list = [];
+        state.refreshing = false;
+      }
+      getOrderList({
+        page: state.page,
+        status: state.status,
+        include: "user,orderDetails.goods",
+      }).then((res) => {
+        state.list = state.list.concat(res.data);
+        state.loading = false;
+        state.totalPage = res.meta.pagination.total_pages;
+        console.log(state.totalPage);
+        if (state.page >= state.totalPage) {
+          state.finished = true;
+        }
+      });
+    };
+
+    const onRefresh = () => {
+      state.page = 1
+      state.refreshing = true;
+      // 清空列表数据
+      state.finished = false;
+
+      // 重新加载数据
+      // 将 loading 设置为 true，表示处于加载状态
+      state.loading = true;
+      onLoad();
+    };
+
+    const onTabChange = (name) => {
+      state.status = name;
+      onRefresh();
+    };
+
+    const goTo = (id) => {
+      router.push({ path: "/orderDetail", query: { id } });
+    };
+    onMounted(() => {
+      onRefresh();
+    });
+
+    return {
+      active,
+      ...toRefs(state),
+      onLoad,
+      onRefresh,
+      onTabChange,
+      goTo,
+    };
   },
 };
 </script>
@@ -53,5 +139,9 @@ export default {
 .content {
   text-align: left;
   padding: 0 1em;
-  }
+}
+
+.order-info {
+  margin-bottom: 2em;
+}
 </style>
