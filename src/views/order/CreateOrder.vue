@@ -42,6 +42,7 @@
       closeable
       v-model:show="showPay"
       :close-on-click-overlay="false"
+      @close="onClose"
       position="bottom"
       :style="{ height: '40%' }"
     >
@@ -50,10 +51,6 @@
           支付宝二维码
           <van-image :src="ali_qr" />
         </van-grid-item>
-        <!-- <van-grid-item>
-          微信支付二维码
-          <van-image :src="wx_qr" />
-        </van-grid-item> -->
       </van-grid>
     </van-popup>
   </div>
@@ -142,25 +139,25 @@ export default {
         payOrder(state.orderId, { type: "aliyun" }).then((res) => {
           state.ali_qr = res.qr_code_url;
         });
-        //Wechat
-        // payOrder(state.orderId, { type: "wechat" }).then((res) => {
-        //     console.log('wechat');
-        //   console.log(res);
-        // });
 
         // 轮询请求
         const timer = setInterval(() => {
           payOrderStatus(state.orderId).then((res) => {
             if (res === 2) {
               clearInterval(timer);
-              router.push({ path: "/order", query: { status: 2 } });
+              router.push({ path: "/orderDetail", query: { id: state.orderId } });
             }
           });
         }, 2000);
       });
     };
+
+    const onClose = () => {
+      router.push({ path: "/orderDetail", query: { id: state.orderId } });
+    }
     return {
       onSubmit,
+      onClose,
       ...toRefs(state),
       goTo,
       total,

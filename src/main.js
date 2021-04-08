@@ -27,6 +27,7 @@ import {
   Popup,
   Grid,
   GridItem,
+  Dialog,
 } from "vant";
 
 createApp(App)
@@ -53,6 +54,7 @@ createApp(App)
   .use(Popup)
   .use(Grid)
   .use(GridItem)
+  .use(Dialog)
   .use(store)
   .use(router)
   .mount("#app");

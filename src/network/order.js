@@ -2,7 +2,7 @@ import { request } from "./request";
 
 // 提交订单
 export function createOrder(params) {
-    //address_id: id
+  //address_id: id
   return request({
     url: "/api/orders",
     method: "POST",
@@ -21,7 +21,7 @@ export function payOrder(order, params) {
   return request({
     url: `/api/orders/${order}/pay`,
     method: "GET",
-    params
+    params,
   });
 }
 // query pay status
@@ -33,11 +33,13 @@ export function payOrderStatus(order) {
 }
 // order detail
 // include: 'goods,user,orderDetails'
-export function getOrderDetail(order, params) {
+export function getOrderDetail(order) {
   return request({
     url: `/api/orders/${order}`,
     method: "GET",
-    params
+    params: {
+      include: "user,orderDetails.goods",
+    },
   });
 }
 // order list
@@ -56,7 +58,7 @@ export function getExpress(order) {
   });
 }
 // 确认收货
-export function conformOrder(order) {
+export function confirmOrder(order) {
   return request({
     url: `/api/orders/${order}/confirm`,
     method: "PATCH",

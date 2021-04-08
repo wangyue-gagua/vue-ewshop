@@ -11,7 +11,9 @@ const Register = () => import("../views/profile/Register.vue");
 const Login = () => import("../views/profile/Login.vue");
 const AddressList = () => import("../views/profile/Address/AddressList.vue");
 const AddressEdit = () => import("../views/profile/Address/AddressEdit.vue");
-const CreateOrder = () => import("../views/shopcart/CreateOrder.vue");
+const CreateOrder = () => import("../views/order/CreateOrder.vue");
+const OrderDetail = () => import("../views/order/OrderDetail.vue");
+const Order = () => import("../views/order/Order.vue");
 const routes = [
   {
     path: "/",
@@ -106,6 +108,24 @@ const routes = [
     component: CreateOrder,
     meta: {
       title: "guagua-book CreateOrder",
+      isAuthRequired: true,
+    },
+  },
+  {
+    path: "/orderDetail",
+    name: "OrderDetail",
+    component: OrderDetail,
+    meta: {
+      title: "guagua-book OrderDetail",
+      isAuthRequired: true,
+    },
+  },
+  {
+    path: "/order",
+    name: "Order",
+    component: Order,
+    meta: {
+      title: "guagua-book Order",
       isAuthRequired: true,
     },
   },
