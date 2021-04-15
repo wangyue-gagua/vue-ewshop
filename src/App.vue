@@ -3,7 +3,7 @@
   <router-view v-slot="{ Component }">
     <transition>
       <keep-alive>
-        <component :is="Component" />
+        <component :is="Component"/>
       </keep-alive>
     </transition>
   </router-view>
@@ -19,39 +19,44 @@
       <svg class="icon tab-bar-icon" aria-hidden="true">
         <use xlink:href="#icon-category"></use>
       </svg>
-      <div>分类</div></router-link
+      <div>分类</div>
+    </router-link
     >
-    <router-link to="/shopcart" class="tab-bar-item">
+    <router-link to="/shopCart" class="tab-bar-item">
       <van-badge :content="$store.state.user.countCart" max="9">
         <svg class="icon tab-bar-icon" aria-hidden="true">
           <use xlink:href="#icon-shop-cart-"></use>
         </svg>
       </van-badge>
-      <div>购物车</div></router-link
+      <div>购物车</div>
+    </router-link
     >
     <router-link to="/profile" class="tab-bar-item">
       <svg class="icon tab-bar-icon" aria-hidden="true">
         <use xlink:href="#icon-04"></use>
       </svg>
-      <div>我的</div></router-link
+      <div>我的</div>
+    </router-link
     >
   </div>
 </template>
 
-<script>
-import {onMounted} from 'vue'
+<script lang="ts">
+import {defineComponent, onMounted} from 'vue'
 import {useStore} from 'vuex'
-export default {
+
+export default defineComponent({
   setup() {
     let store = useStore();
     onMounted(() => {
       store.dispatch("updateCart");
     });
   },
-};
+})
 </script>
 <style lang="scss">
 @import "./assets/css/base.css";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -1,7 +1,7 @@
 import { request } from "./request";
 
 // 提交订单
-export function createOrder(params) {
+export function createOrder(params: {address_id: number}) {
   //address_id: id
   return request({
     url: "/api/orders",
@@ -17,7 +17,7 @@ export function getOrderPreview() {
   });
 }
 // order pay
-export function payOrder(order, params) {
+export function payOrder(order: number, params: "aliyun" | "wechat") {
   return request({
     url: `/api/orders/${order}/pay`,
     method: "GET",
@@ -25,7 +25,7 @@ export function payOrder(order, params) {
   });
 }
 // query pay status
-export function payOrderStatus(order) {
+export function payOrderStatus(order: number) {
   return request({
     url: `/api/orders/${order}/status`,
     method: "GET",
@@ -33,7 +33,7 @@ export function payOrderStatus(order) {
 }
 // order detail
 // include: 'goods,user,orderDetails'
-export function getOrderDetail(order) {
+export function getOrderDetail(order: number) {
   return request({
     url: `/api/orders/${order}`,
     method: "GET",
@@ -43,7 +43,7 @@ export function getOrderDetail(order) {
   });
 }
 // order list
-export function getOrderList(params) {
+export function getOrderList(params: {page?: number, title?: string, status?: string, include?: string}) {
   return request({
     url: "/api/orders",
     method: "GET",
@@ -51,21 +51,21 @@ export function getOrderList(params) {
   });
 }
 // express detail
-export function getExpress(order) {
+export function getExpress(order: number) {
   return request({
     url: `/api/orders/${order}/express`,
     method: "GET",
   });
 }
 // 确认收货
-export function confirmOrder(order) {
+export function confirmOrder(order: number) {
   return request({
     url: `/api/orders/${order}/confirm`,
     method: "PATCH",
   });
 }
 // comment goods
-export function commentOrder(order, params) {
+export function commentOrder(order: number, params: {goods_id: number, content: string, rate?: number, star?: number}) {
   return request({
     url: `/api/orders/${order}/comment`,
     method: "POST",

@@ -1,6 +1,6 @@
-import { getCart } from "../network/cart.js";
+import { getCart } from "../network/cart";
 const actions = {
-  updateCart(context) {
+  updateCart(context: any) {
     getCart().then((res) => {
       context.commit("addCart", { count: res.data.length || 0 });
     });

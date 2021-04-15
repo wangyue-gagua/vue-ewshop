@@ -75,7 +75,7 @@ import {
   deleteCartItem,
   modifyCart,
   checkCart,
-} from "network/cart.js";
+} from "network/cart";
 import { SwipeCell, Stepper, SubmitBar, Toast } from "vant";
 export default {
   name: "ShopCart",
@@ -211,7 +211,7 @@ export default {
 }
 
 .van-checkbox {
-  width: 20px；;
+  width: 20px;
 }
 
 .empty {

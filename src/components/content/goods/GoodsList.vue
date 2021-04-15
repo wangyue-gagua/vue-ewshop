@@ -3,9 +3,10 @@
     <GoodsListItem v-for="item of goodsData" :key="item" :good="item"></GoodsListItem>
   </div>
 </template>
-<script>
+<script lang="ts">
 import GoodsListItem from "./GoodsListItem.vue";
-export default {
+import {defineComponent} from "vue";
+export default defineComponent({
   name: "GoodsList",
   props: {
     goodsData: {
@@ -18,7 +19,7 @@ export default {
   components: {
     GoodsListItem,
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

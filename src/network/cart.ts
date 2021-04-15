@@ -1,7 +1,7 @@
 import { request } from "./request";
 
 // add shop cart
-export function addCart(data) {
+export function addCart(data: {goods_id: string, num?: string}) {
   return request({
     url: "/api/carts",
     method: "POST",
@@ -10,7 +10,7 @@ export function addCart(data) {
 }
 
 // modify shop cart
-export function modifyCart(id, data) {
+export function modifyCart(id: number, data: {num: number}) {
   return request({
     url: `/api/carts/${id}`,
     method: "PUT",
@@ -19,7 +19,8 @@ export function modifyCart(id, data) {
 }
 
 // get shop cart checkbox state
-export function checkCart(data) {
+// 注意： 会把提交过来的购物车数据设置为选中， 未提交过来的购物车数据设置为非选中
+export function checkCart(data: {cart_ids: Array<number>}) {
   return request({
     url: "/api/carts/checked",
     method: "PATCH",
@@ -37,7 +38,7 @@ export function getCart(data = "") {
 }
 
 // delete shop cart
-export function deleteCartItem(id) {
+export function deleteCartItem(id: number) {
   return request({
     url: `/api/carts/${id}`,
     method: "DELETE",

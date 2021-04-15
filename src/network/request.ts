@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import { Notify, Toast } from "vant";
 import router from "../router"
-export function request(config) {
+export function request(config: AxiosRequestConfig) {
   const instance = axios.create({
     baseURL: "https://api.shop.eduwork.cn",
     timeout: 5000,

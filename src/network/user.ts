@@ -1,13 +1,13 @@
 import {request} from './request'
 
-export function register(data) {
+export function register(data: {name: string, email: string, password: string, password_confirmation: string}) {
     return request({
         url: '/api/auth/register',
         method: 'POST',
         data: data
     })
 }
-export function Login(data) {
+export function Login(data: {email: string, password: string}) {
     return request({
         url: '/api/auth/login',
         method: 'POST',

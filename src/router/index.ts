@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory, RouteMeta, RouteRecordRaw} from "vue-router";
 import store from "../store";
 import { Notify } from "vant";
 
@@ -6,7 +6,7 @@ const Category = () => import("../views/category/Category.vue");
 const Detail = () => import("../views/detail/Detail.vue");
 const Home = () => import("../views/home/Home.vue");
 const Profile = () => import("../views/profile/Profile.vue");
-const ShopCart = () => import("../views/shopcart/ShopCart.vue");
+const ShopCart = () => import("../views/shopCart/ShopCart.vue");
 const Register = () => import("../views/profile/Register.vue");
 const Login = () => import("../views/profile/Login.vue");
 const AddressList = () => import("../views/profile/Address/AddressList.vue");
@@ -14,7 +14,17 @@ const AddressEdit = () => import("../views/profile/Address/AddressEdit.vue");
 const CreateOrder = () => import("../views/order/CreateOrder.vue");
 const OrderDetail = () => import("../views/order/OrderDetail.vue");
 const Order = () => import("../views/order/Order.vue");
-const routes = [
+
+declare module 'vue-router' {
+    interface RouteMeta {
+        // is optional
+        isAuthRequired?: boolean
+        // must be declared by every route
+        title: string
+    }
+}
+
+const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "DefaultHome",
@@ -57,14 +67,14 @@ const routes = [
     },
   },
   {
-    path: "/shopcart",
+    path: "/shopCart",
     name: "ShopCart",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: ShopCart,
     meta: {
-      title: "guagua-book shopcart",
+      title: "guagua-book shopCart",
       isAuthRequired: true,
     },
   },
@@ -138,14 +148,14 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   // if not authentication for login
-  if (to.meta.isAuthRequired && store.state.user.isLoggedIn === false) {
+  if (to.meta.isAuthRequired && !store.state.user.isLoggedIn) {
     Notify("请先登录");
     return next("/login");
   } else {
     next();
   }
-
-  document.title = to.meta.title;
+  const page_meta: RouteMeta = to.meta
+  document.title = page_meta.title;
 });
 
 export default router;

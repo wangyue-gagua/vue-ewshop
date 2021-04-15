@@ -8,9 +8,10 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { useRouter} from 'vue-router';
-export default {
+import {defineComponent} from "vue";
+export default defineComponent({
   name: "GoodsListItem",
   props: {
     good: {
@@ -22,16 +23,17 @@ export default {
   },
   setup() {
     let router = useRouter();
+    const goDetail = (id: number) => {
+      router.push({
+        path: "/detail",
+        query: { id: id },
+      });
+    }
     return {
-      goDetail: (id) => {
-        router.push({
-          path: "/detail",
-          query: { id },
-        });
-      },
+      goDetail
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

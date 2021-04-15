@@ -68,7 +68,7 @@
 </template>
 <script>
 import NavBar from "components/common/navbar/NavBar.vue";
-import { register } from "network/user.js";
+import { register } from "network/user";
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { Notify, Toast } from "vant";

@@ -35,7 +35,7 @@
 
     <van-tabs v-model:active="active">
       <van-tab title="概述"
-        ><div class="content" v-html="goods.details"></div
+        ><div id="html_content" v-html="goods.details"></div
       ></van-tab>
       <van-tab title="热评">内容 2</van-tab>
       <van-tab title="相关图书"
@@ -50,8 +50,8 @@ import NavBar from "components/common/navbar/NavBar.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { getGoodDetail } from "network/detail.js";
-import { addCart } from "network/cart.js";
+import { getGoodDetail } from "network/detail";
+import { addCart } from "network/cart";
 import { ref, onMounted, reactive, toRefs } from "vue";
 import { Toast } from "vant";
 export default {
@@ -94,7 +94,7 @@ export default {
       addCart({ goods_id: id.value, num: 1 }).then((res) => {
         if (res.status === 201 || res.status === 204) {
           Toast.success("添加成功, 跳转至购物车");
-          router.push({ path: "/shopcart" });
+          router.push({ path: "/shopCart" });
           store.dispatch("updateCart");
         }
       });
@@ -106,7 +106,7 @@ export default {
 </script>
 
 <style lang="scss">
-.content {
+#html_content {
   img {
     width: 100vw;
   }

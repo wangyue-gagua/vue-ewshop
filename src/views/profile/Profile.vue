@@ -53,7 +53,7 @@
 
 <script>
 import NavBar from "components/common/navbar/NavBar.vue";
-import { Logout, getUser } from "network/user.js";
+import { Logout, getUser } from "network/user";
 import { onMounted, toRefs} from "vue"
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";

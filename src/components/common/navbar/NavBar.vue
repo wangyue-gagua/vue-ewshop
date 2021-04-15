@@ -1,26 +1,27 @@
 <template>
   <div class="nav-bar">
-    <div class="left" @click="goback"><slot name="left"></slot></div>
+    <div class="left" @click="goBack"><slot name="left"></slot></div>
     <div class="middle"><slot name="middle"></slot></div>
     <div class="right"><slot name="right"></slot></div>
   </div>
 </template>
 
-<script>
-import { useRouter } from "vue-router";
-export default {
+<script lang="ts">
+import { useRouter} from "vue-router";
+import {defineComponent} from 'vue'
+export default defineComponent({
   name: "NavBar",
   setup() {
     const router = useRouter();
-    const goback = () => {
+    const goBack = () => {
       router.go(-1);
     };
 
     return {
-      goback,
+      goBack,
     };
   },
-};
+});
 </script>
 
 <style scoped>
@@ -36,7 +37,7 @@ export default {
   height: 45px;
   line-height: 45px;
   text-align: center;
-  box-shadow: 0 2px 0px rgba(100, 100, 100, 0.1);
+  box-shadow: 0 2px 0 rgba(100, 100, 100, 0.1);
 }
 
 .left, .right {

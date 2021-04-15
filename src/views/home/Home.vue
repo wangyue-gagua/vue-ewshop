@@ -14,7 +14,7 @@
       @tabClick="TabClick"
     ></tab-control>
 
-    <div class="wrapper">
+<!--    <div class="wrapper">
       <div class="content">
         <div ref="banref">
           <HomeSwiper :slides="slides"></HomeSwiper>
@@ -23,36 +23,51 @@
         <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
         <goods-list :goodsData="ShowGoodsData"></goods-list>
       </div>
-    </div>
+    </div>-->
+    <van-list
+        v-model:loading="state.loading"
+        :finished="state.finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+        :immediate-check="false"
+    >
+      <HomeSwiper :slides="slides"></HomeSwiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
+      <goods-list :goodsData="ShowGoodsData"></goods-list>
+    </van-list>
 
     <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import NavBar from "components/common/navbar/NavBar.vue";
 import RecommendView from "./childcompos/RecommendView.vue";
 import TabControl from "components/content/tabcontrol/TabControl.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import UpBack from "components/common/upback/UpBack.vue";
 import HomeSwiper from "views/home/childcompos/HomeSwiper.vue";
-import { getHomeAllData, getHomeGoods } from "network/home.js";
-import { computed, nextTick, onMounted, reactive, ref, watchEffect } from "vue";
-import BScroll from "better-scroll";
+import { getHomeAllData, getHomeGoods } from "@/network/home";
+import {computed, defineComponent, onMounted, reactive, ref} from "vue";
+// import BScroll from "better-scroll";
 
-export default {
+
+export default defineComponent({
   name: "home",
   setup() {
-    let tab_title = ["畅销", "新书", "精选"];
-    let queryMap = new Map([
-      ["畅销", "sales"],
-      ["新书", "new"],
-      ["精选", "recommend"],
-    ]);
+    const tab_title = ["畅销", "新书", "精选"];
+    const tab_title_en = ["sales", "new", "recommend"] as const
     let isTabFixed = ref(false);
     let isShowBackTop = ref(false);
     // define ata model
-    let goodsData = reactive({
+
+    interface STATE {
+      sales: { page: number, data: object[] },
+      new: { page: number, data: object[] },
+      recommend: { page: number, data: object[] },
+    }
+    let goodsData = reactive<STATE>({
       sales: { page: 1, data: [] },
       new: { page: 1, data: [] },
       recommend: { page: 1, data: [] },
@@ -61,6 +76,25 @@ export default {
     let recommends = ref([]);
     let bs = reactive({});
     let banref = ref(null);
+
+    const state = reactive({
+      list: [],
+      loading: false,
+      finished: false,
+    });
+
+
+    const onLoad = () => {
+      // 异步更新数据
+          let page = goodsData[currentType.value].page + 1;
+      console.log('currentPage' + page);
+      getHomeGoods(currentType.value, page).then((res: Ajax.AxiosResponse) => {
+            goodsData[currentType.value].data.push(...res.goods.data);
+            goodsData[currentType.value].page += 1;
+            state.loading = false;
+          })
+    };
+
     onMounted(() => {
       getHomeAllData().then((res) => {
         recommends.value = res.goods.data;
@@ -76,7 +110,7 @@ export default {
         goodsData.recommend.data = res.goods.data;
       });
 
-      // build better scroll object
+      /*// build better scroll object
       bs = new BScroll(document.querySelector(".wrapper"), {
         // ...
         probeType: 3,
@@ -101,34 +135,39 @@ export default {
         bs && bs.refresh();
 
         // finish pullingUp and present data info
-      });
+      });*/
     });
 
     let currentIndex = ref(0);
     let currentType = computed(() => {
-      return queryMap.get(tab_title[currentIndex.value]);
+        return tab_title_en[currentIndex.value];
     });
     let ShowGoodsData = computed(() => {
       return goodsData[currentType.value].data;
     });
 
-    const TabClick = (index) => {
+    const TabClick = (index: number) => {
+      state.finished = false;
+      goodsData[currentType.value].data = []
+      goodsData[currentType.value].page = 1
       currentIndex.value = index;
 
-      nextTick(() => {
+      state.loading = true;
+      onLoad();
+      /*nextTick(() => {
         bs && bs.refresh();
-      });
+      });*/
     };
 
-    // listen any variable changes
+/*    // listen any variable changes
     watchEffect(() => {
       nextTick(() => {
         bs && bs.refresh();
       });
-    });
+    });*/
 
     const bTop = () => {
-      bs.scrollTo(0, 0, 500);
+      // bs.scrollTo(0, 0, 500);
     };
     return {
       recommends,
@@ -141,6 +180,8 @@ export default {
       banref,
       bTop,
       bs,
+      state,
+      onLoad,
     };
   },
   components: {
@@ -151,7 +192,7 @@ export default {
     GoodsList,
     UpBack,
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

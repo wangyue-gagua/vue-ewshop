@@ -61,7 +61,7 @@
 <script>
 import NavBar from "components/common/navbar/NavBar.vue";
 import UpBack from "components/common/upback/UpBack.vue";
-import { getCategory, getCategoryGoods } from "network/category.js";
+import { getCategory, getCategoryGoods } from "network/category";
 import { ref, reactive, onMounted, computed, watchEffect, nextTick } from "vue";
 import { useRouter } from "vue-router";
 import BScroll from "better-scroll";
