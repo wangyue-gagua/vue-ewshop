@@ -45,16 +45,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import NavBar from "components/common/navbar/NavBar.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { getGoodDetail } from "network/detail";
+import {GETGOODDETAIL, getGoodDetail , LikeGoods} from "network/detail";
 import { addCart } from "network/cart";
-import { ref, onMounted, reactive, toRefs } from "vue";
+import {ref, onMounted, reactive, toRefs, defineComponent} from "vue";
 import { Toast } from "vant";
-export default {
+import {AxiosResponse} from "axios";
+export default defineComponent({
   name: "Detail",
   components: {
     NavBar,
@@ -65,24 +66,24 @@ export default {
     let router = useRouter();
     let store = useStore();
     let id = ref(0);
-    id.value = route.query.id;
+    id.value = parseInt(route.query.id);
 
     const active = ref(0);
 
     let book = reactive({
       goods: {},
       like_goods: [],
-    });
+    }) as unknown as GETGOODDETAIL;
 
     onMounted(() => {
-      getGoodDetail(id.value).then((res) => {
-        book.goods = res.goods;
-        book.like_goods = res.like_goods;
+      getGoodDetail(id.value).then((res: AxiosResponse<GETGOODDETAIL>) => {
+        book.goods = res.data.goods;
+        book.like_goods = res.data.like_goods;
       });
     });
 
     const handleAddCart = () => {
-      addCart({ goods_id: id.value, num: 1 }).then((res) => {
+      addCart({ goods_id: id.value.toString(), num: '1' }).then((res) => {
         if (res.status === 201 || res.status === 204) {
           Toast.success("添加购物车成功");
           store.dispatch("updateCart");
@@ -91,7 +92,7 @@ export default {
     };
 
     const goToCart = () => {
-      addCart({ goods_id: id.value, num: 1 }).then((res) => {
+      addCart({ goods_id: id.value.toString(), num: '1' }).then((res) => {
         if (res.status === 201 || res.status === 204) {
           Toast.success("添加成功, 跳转至购物车");
           router.push({ path: "/shopCart" });
@@ -102,7 +103,7 @@ export default {
 
     return { id, active, ...toRefs(book), handleAddCart, goToCart };
   },
-};
+});
 </script>
 
 <style lang="scss">
