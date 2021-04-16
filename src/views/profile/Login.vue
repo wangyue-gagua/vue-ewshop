@@ -53,30 +53,31 @@
   </div>
 </template>
 <script>
-import NavBar from "components/common/navbar/NavBar.vue";
-import { Login } from "network/user";
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
-import { Notify, Toast } from "vant";
-import { useStore } from "vuex";
+import NavBar from 'components/common/navbar/NavBar.vue';
+import { Login } from 'network/user';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { Notify, Toast } from 'vant';
+import { useStore } from 'vuex';
+
 export default {
-  name: "Login",
+  name: 'Login',
   components: { NavBar },
   setup() {
-    let router = useRouter();
-    let store = useStore();
+    const router = useRouter();
+    const store = useStore();
     const userInfo = reactive({
-      password: "",
-      email: "",
+      password: '',
+      email: '',
     });
     const onSubmit = (values) => {
       Login(userInfo).then((res) => {
         // store access token to local storage
-        window.localStorage.setItem("access_token", res.access_token);
+        window.localStorage.setItem('access_token', res.access_token);
         // vuex islogin
-        store.commit("setIsloggedIn", true);
+        store.commit('setIsloggedIn', true);
 
-        Toast.success("登录成功");
+        Toast.success('登录成功');
         setTimeout(() => {
           router.go(-1);
         }, 500);

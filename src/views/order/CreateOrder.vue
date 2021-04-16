@@ -56,52 +56,56 @@
   </div>
 </template>
 <script>
-import NavBar from "components/common/navbar/NavBar.vue";
+import NavBar from 'components/common/navbar/NavBar.vue';
 import {
   getOrderPreview,
   createOrder,
   payOrder,
   payOrderStatus,
-} from "network/order";
-import { reactive, onMounted, toRefs, computed } from "vue";
-import { Toast } from "vant";
-import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
+} from 'network/order';
+import {
+  reactive, onMounted, toRefs, computed,
+} from 'vue';
+import { Toast } from 'vant';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+
 export default {
-  name: "CreateOrder",
+  name: 'CreateOrder',
   components: {
     NavBar,
   },
   setup() {
     const route = useRoute();
     const router = useRouter();
-    let store = useStore();
+    const store = useStore();
     const state = reactive({
       cartList: [],
       address: {
-        name: "",
-        phone: "",
-        city: "",
-        province: "",
-        county: "",
-        address: "",
+        name: '',
+        phone: '',
+        city: '',
+        province: '',
+        county: '',
+        address: '',
       },
       showPay: false,
-      orderId: "",
-      ali_qr: "",
-      wx_qr: "",
+      orderId: '',
+      ali_qr: '',
+      wx_qr: '',
     });
 
     const init = () => {
-      Toast.loading({ message: "加载中...", forbidClick: true });
+      Toast.loading({ message: '加载中...', forbidClick: true });
 
       getOrderPreview().then((res) => {
-        let address = res.address.filter((item) => item.is_default === 1);
+        const address = res.address.filter((item) => item.is_default === 1);
         if (address.length === 0) {
           state.address = {
-            address: "还没有默认地址，请选择或添加默认地址",
+            address: '还没有默认地址，请选择或添加默认地址',
           };
         } else {
+          // eslint-disable-next-line prefer-destructuring
           state.address = address[0];
         }
 
@@ -114,29 +118,29 @@ export default {
     });
     const goTo = () => {
       router.push({
-        path: "/address-list",
+        path: '/address-list',
       });
     };
 
     const total = computed(() => {
       let sum = 0;
       state.cartList.forEach((item) => {
-        sum += parseInt(item.num) * parseFloat(item.goods.price);
+        sum += parseInt(item.num, 10) * parseFloat(item.goods.price);
       });
       return sum;
     });
     const onSubmit = () => {
-      let params = {
+      const params = {
         address_id: state.address.id,
       };
       createOrder(params).then((res) => {
-        Toast.success("创建成功");
-        store.dispatch("updateCart");
+        Toast.success('创建成功');
+        store.dispatch('updateCart');
         state.showPay = true;
 
         state.orderId = res.id;
-        //AliPay
-        payOrder(state.orderId, { type: "aliyun" }).then((res) => {
+        // AliPay
+        payOrder(state.orderId, { type: 'aliyun' }).then((res) => {
           state.ali_qr = res.qr_code_url;
         });
 
@@ -145,7 +149,7 @@ export default {
           payOrderStatus(state.orderId).then((res) => {
             if (res === 2) {
               clearInterval(timer);
-              router.push({ path: "/orderDetail", query: { id: state.orderId } });
+              router.push({ path: '/orderDetail', query: { id: state.orderId } });
             }
           });
         }, 2000);
@@ -153,8 +157,8 @@ export default {
     };
 
     const onClose = () => {
-      router.push({ path: "/orderDetail", query: { id: state.orderId } });
-    }
+      router.push({ path: '/orderDetail', query: { id: state.orderId } });
+    };
     return {
       onSubmit,
       onClose,

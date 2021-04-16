@@ -4,17 +4,18 @@
   </div>
 </template>
 <script lang="ts">
-import GoodsListItem from "./GoodsListItem.vue";
-import {defineComponent} from "vue";
+import { defineComponent } from 'vue';
+import GoodsListItem from './GoodsListItem.vue';
+
 export default defineComponent({
-  name: "GoodsList",
+  name: 'GoodsList',
   props: {
     goodsData: {
       type: Array,
       default() {
         return [];
-      }
-    }
+      },
+    },
   },
   components: {
     GoodsListItem,

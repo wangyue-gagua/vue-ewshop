@@ -1,44 +1,50 @@
-import axios, {AxiosRequestConfig} from "axios";
-import { Notify, Toast } from "vant";
-import router from "../router"
-export function request(config: AxiosRequestConfig) {
+import axios, { AxiosRequestConfig } from 'axios';
+import { Notify, Toast } from 'vant';
+// eslint-disable-next-line import/no-cycle
+import router from '../router';
+
+export default function request(config: AxiosRequestConfig) {
   const instance = axios.create({
-    baseURL: "https://api.shop.eduwork.cn",
+    baseURL: 'https://api.shop.eduwork.cn',
     timeout: 5000,
   });
   // interceptors
   instance.interceptors.request.use(
-    (config) => {
+    (conf) => {
       // if need authentication to access an api
-      const token = window.localStorage.getItem("access_token");
+      const token = window.localStorage.getItem('access_token');
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        // eslint-disable-next-line no-param-reassign
+        conf.headers.Authorization = `Bearer ${token}`;
       }
       // permit through
       return config;
     },
-    (err) => {}
+    (err) => {
+      console.log(err);
+    },
   );
 
   instance.interceptors.response.use(
     (res) => {
-      console.log(res);
+      console.log(res.data);
       // return res.data ? res.data : res;
-        return res;
+      return res;
     },
     (err) => {
       // if need authentication login
-      if (err.response.status === 401) {
-          Toast.fail('请先登录')
-            setTimeout(() =>{
-              router.push({path: '/login'})
-            }, 100)
+      console.log(err);
+      /* if (err.response?.status === 401) {
+        Toast.fail('请先登录');
+        setTimeout(() => {
+          router.push({ path: '/login' });
+        }, 100);
       }
       // handling error message
       Notify(
-        err.response.data.errors[Object.keys(err.response.data.errors)[0]][0]
-      );
-    }
+        err.response.data.errors[Object.keys(err.response.data.errors)[0]][0],
+      ); */
+    },
   );
 
   return instance(config);

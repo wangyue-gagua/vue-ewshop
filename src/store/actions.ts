@@ -1,8 +1,10 @@
-import { getCart } from "../network/cart";
+// eslint-disable-next-line import/no-cycle
+import { getCart } from '../network/cart';
+
 const actions = {
   updateCart(context: any) {
     getCart().then((res) => {
-      context.commit("addCart", { count: res.data.length || 0 });
+      context.commit('addCart', { count: res.data.length || 0 });
     });
   },
 };

@@ -49,12 +49,15 @@
   </div>
 </template>
 <script>
-import NavBar from "components/common/navbar/NavBar.vue";
-import { getOrderList } from "network/order";
-import { ref, reactive, onMounted, toRefs } from "vue";
-import { useRouter } from "vue-router";
+import NavBar from 'components/common/navbar/NavBar.vue';
+import { getOrderList } from 'network/order';
+import {
+  ref, reactive, onMounted, toRefs,
+} from 'vue';
+import { useRouter } from 'vue-router';
+
 export default {
-  name: "Order",
+  name: 'Order',
   components: {
     NavBar,
   },
@@ -74,7 +77,7 @@ export default {
     const onLoad = () => {
       if (!state.refreshing && state.page < state.totalPage) {
         state.page += 1;
-        console.log(state.page + "@@@@@@");
+        console.log(`${state.page}@@@@@@`);
       }
       if (state.refreshing) {
         state.list = [];
@@ -83,7 +86,7 @@ export default {
       getOrderList({
         page: state.page,
         status: state.status,
-        include: "user,orderDetails.goods",
+        include: 'user,orderDetails.goods',
       }).then((res) => {
         state.list = state.list.concat(res.data);
         state.loading = false;
@@ -96,7 +99,7 @@ export default {
     };
 
     const onRefresh = () => {
-      state.page = 1
+      state.page = 1;
       state.refreshing = true;
       // 清空列表数据
       state.finished = false;
@@ -113,7 +116,7 @@ export default {
     };
 
     const goTo = (id) => {
-      router.push({ path: "/orderDetail", query: { id } });
+      router.push({ path: '/orderDetail', query: { id } });
     };
     onMounted(() => {
       onRefresh();

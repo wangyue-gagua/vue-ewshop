@@ -22,52 +22,49 @@
   </div>
 </template>
 
-  
 <script>
-import NavBar from "components/common/navbar/NavBar.vue";
-import {getAddressList} from 'network/address'
-import { useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
-import { AddressList, Toast } from "vant";
+import NavBar from 'components/common/navbar/NavBar.vue';
+import { getAddressList } from 'network/address';
+import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { AddressList, Toast } from 'vant';
+
 export default {
-  name: "AddressList",
+  name: 'AddressList',
   components: {
     NavBar,
-    "van-address-list": AddressList,
+    'van-address-list': AddressList,
   },
   setup() {
-    const chosenAddressId = ref("1");
+    const chosenAddressId = ref('1');
     const list = ref([]);
     const disabledList = [
     ];
 
-    let router = useRouter();
+    const router = useRouter();
 
     onMounted(() => {
-      getAddressList().then((res)=> {
-        if (res.data.length !== 0)
-        list.value = res.data.map(item => {
-          return {
+      getAddressList().then((res) => {
+        if (res.data.length !== 0) {
+          list.value = res.data.map((item) => ({
             id: item.id,
             name: item.name,
             tel: item.phone,
             address: `${item.province} ${item.city} ${item.county} ${item.address}`,
-            isDefault: !!item.is_default}
-        })
-      })
-    })
-    const onAdd = () =>
-      router.push({
-        path: "/address-edit",
-        query: { type: "add" },
+            isDefault: !!item.is_default,
+          }));
+        }
       });
-    const onEdit = (item) =>
-      router.push({
-        path: "/address-edit",
-        query: { type: "edit", addressId: item.id },
-      });
-    const onSelect = (item) =>
-      router.push({ path: "createoder", query: { addressId: item.id } });
+    });
+    const onAdd = () => router.push({
+      path: '/address-edit',
+      query: { type: 'add' },
+    });
+    const onEdit = (item) => router.push({
+      path: '/address-edit',
+      query: { type: 'edit', addressId: item.id },
+    });
+    const onSelect = (item) => router.push({ path: 'createoder', query: { addressId: item.id } });
 
     return {
       list,

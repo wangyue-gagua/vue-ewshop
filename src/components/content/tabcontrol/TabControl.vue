@@ -12,9 +12,10 @@
   </div>
 </template>
 <script>
-import { ref } from "vue";
+import { ref } from 'vue';
+
 export default {
-  name: "TabControl",
+  name: 'TabControl',
   props: {
     titles: {
       type: Array,
@@ -25,10 +26,10 @@ export default {
   },
 
   setup(props, { emit }) {
-    let currentIndex = ref(0);
+    const currentIndex = ref(0);
     const IndexClick = (index) => {
       currentIndex.value = index;
-      emit("tabClick", index);
+      emit('tabClick', index);
     };
 
     return { currentIndex, IndexClick };

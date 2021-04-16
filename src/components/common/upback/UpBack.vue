@@ -3,11 +3,11 @@
 </template>
 <script>
 export default {
-  name: "UpBack",
+  name: 'UpBack',
   setup(props, { emit }) {
     return {
       backUp: () => {
-        emit("bTop");
+        emit('bTop');
       },
     };
   },

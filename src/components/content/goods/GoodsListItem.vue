@@ -9,10 +9,11 @@
   </div>
 </template>
 <script lang="ts">
-import { useRouter} from 'vue-router';
-import {defineComponent} from "vue";
+import { useRouter } from 'vue-router';
+import { defineComponent } from 'vue';
+
 export default defineComponent({
-  name: "GoodsListItem",
+  name: 'GoodsListItem',
   props: {
     good: {
       type: Object,
@@ -22,15 +23,15 @@ export default defineComponent({
     },
   },
   setup() {
-    let router = useRouter();
+    const router = useRouter();
     const goDetail = (id: number) => {
       router.push({
-        path: "/detail",
-        query: { id: id },
+        path: '/detail',
+        query: { id },
       });
-    }
+    };
     return {
-      goDetail
+      goDetail,
     };
   },
 });

@@ -52,32 +52,33 @@
 </template>
 
 <script>
-import NavBar from "components/common/navbar/NavBar.vue";
-import { Logout, getUser } from "network/user";
-import { onMounted, toRefs} from "vue"
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-import { Toast } from "vant";
+import NavBar from 'components/common/navbar/NavBar.vue';
+import { Logout, getUser } from 'network/user';
+import { onMounted, toRefs } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { Toast } from 'vant';
+
 export default {
-  name: "Profile",
+  name: 'Profile',
   components: {
     NavBar,
   },
   setup() {
-    let router = useRouter();
-    let store = useStore();
+    const router = useRouter();
+    const store = useStore();
 
-    let state = {
+    const state = {
       user: {},
     };
     const logout = () => {
       Logout().then((res) => {
         if (res.status == 204) {
-          Toast.success("成功退出");
-          window.localStorage.removeItem("access_token");
-          store.commit("setIsloggedIn", false);
+          Toast.success('成功退出');
+          window.localStorage.removeItem('access_token');
+          store.commit('setIsloggedIn', false);
           setTimeout(() => {
-            router.push({ path: "/login" });
+            router.push({ path: '/login' });
           }, 500);
         }
       });
@@ -90,7 +91,7 @@ export default {
 
     onMounted(() => {
       getUser().then((res) => {
-        state.user = res
+        state.user = res;
       });
     });
 

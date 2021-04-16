@@ -12,11 +12,10 @@
 </template>
 <script>
 export default {
-  name: "HomeSwiper",
+  name: 'HomeSwiper',
   props: {
     slides: {
       type: Array,
-      default: [],
     },
   },
 };

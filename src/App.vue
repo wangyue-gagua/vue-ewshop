@@ -42,17 +42,17 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted} from 'vue'
-import {useStore} from 'vuex'
+import { defineComponent, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   setup() {
-    let store = useStore();
+    const store = useStore();
     onMounted(() => {
-      store.dispatch("updateCart");
+      store.dispatch('updateCart');
     });
   },
-})
+});
 </script>
 <style lang="scss">
 @import "./assets/css/base.css";

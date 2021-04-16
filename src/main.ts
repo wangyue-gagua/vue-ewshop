@@ -1,8 +1,4 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-
+import { createApp } from 'vue';
 import {
   List,
   PullRefresh,
@@ -30,7 +26,10 @@ import {
   Grid,
   GridItem,
   Dialog,
-} from "vant";
+} from 'vant';
+import App from './App.vue';
+import router from './router';
+import store from './store';
 
 createApp(App)
   .use(List)
@@ -61,4 +60,4 @@ createApp(App)
   .use(Dialog)
   .use(store)
   .use(router)
-  .mount("#app");
+  .mount('#app');

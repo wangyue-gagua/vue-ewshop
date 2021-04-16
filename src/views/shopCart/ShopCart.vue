@@ -66,24 +66,29 @@
 </template>
 
 <script>
-import NavBar from "components/common/navbar/NavBar.vue";
-import { ref, reactive, toRefs, onMounted, computed } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import NavBar from 'components/common/navbar/NavBar.vue';
+import {
+  ref, reactive, toRefs, onMounted, computed,
+} from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import {
   getCart,
   deleteCartItem,
   modifyCart,
   checkCart,
-} from "network/cart";
-import { SwipeCell, Stepper, SubmitBar, Toast } from "vant";
+} from 'network/cart';
+import {
+  SwipeCell, Stepper, SubmitBar, Toast,
+} from 'vant';
+
 export default {
-  name: "ShopCart",
+  name: 'ShopCart',
   components: {
     NavBar,
-    "van-swipe-cell": SwipeCell,
-    "van-stepper": Stepper,
-    "van-submit-bar": SubmitBar,
+    'van-swipe-cell': SwipeCell,
+    'van-stepper': Stepper,
+    'van-submit-bar': SubmitBar,
   },
   setup() {
     const router = useRouter();
@@ -91,17 +96,15 @@ export default {
     const isAllcheck = ref(null);
     const checkGroup = ref(null);
     const onSubmit = () => {
-      if(cartInfo.checked.length === 0){
-        Toast.fail('请选择商品')
-        return
+      if (cartInfo.checked.length === 0) {
+        Toast.fail('请选择商品');
+      } else {
+        router.push({ path: '/createOrder' });
       }
-      else {
-        router.push({ path: '/createOrder'})
-      }
-    }
-    const onClickLink = () => Toast("修改地址");
+    };
+    const onClickLink = () => Toast('修改地址');
     const goToShop = () => {
-      router.push({ path: "/home" });
+      router.push({ path: '/home' });
     };
     // data model
     const cartInfo = reactive({
@@ -110,8 +113,8 @@ export default {
     });
 
     const init = () => {
-      Toast.loading({ message: "加载中...", forbidClick: true });
-      getCart("include=goods").then((res) => {
+      Toast.loading({ message: '加载中...', forbidClick: true });
+      getCart('include=goods').then((res) => {
         console.log(res);
         cartInfo.list = res.data;
         cartInfo.checked = res.data
@@ -133,7 +136,7 @@ export default {
       checkCart({ cart_ids: names });
     };
     const onChange = (value, detail) => {
-      Toast.loading({ message: "修改中", forbidClick: true });
+      Toast.loading({ message: '修改中', forbidClick: true });
       modifyCart(detail.name, { num: value }).then((res) => {
         // update list
         // cartInfo.list.forEach((item) =>{
@@ -157,15 +160,15 @@ export default {
     const deleteItem = (id) => {
       deleteCartItem(id).then((res) => {
         init();
-        store.dispatch("updateCart");
+        store.dispatch('updateCart');
       });
     };
 
     const total = computed(() => {
       let sum = 0;
-      cartInfo.list.filter(item=>cartInfo.checked.includes(item.id)).forEach(item=>sum += item.goods.price * item.num)
-      return sum
-    })
+      cartInfo.list.filter((item) => cartInfo.checked.includes(item.id)).forEach((item) => sum += item.goods.price * item.num);
+      return sum;
+    });
     return {
       isAllcheck,
       onSubmit,
@@ -177,7 +180,7 @@ export default {
       checkALL,
       checkGroup,
       deleteItem,
-      total
+      total,
     };
   },
 };

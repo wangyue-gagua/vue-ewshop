@@ -7,10 +7,11 @@
 </template>
 
 <script lang="ts">
-import { useRouter} from "vue-router";
-import {defineComponent} from 'vue'
+import { useRouter } from 'vue-router';
+import { defineComponent } from 'vue';
+
 export default defineComponent({
-  name: "NavBar",
+  name: 'NavBar',
   setup() {
     const router = useRouter();
     const goBack = () => {

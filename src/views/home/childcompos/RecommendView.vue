@@ -14,9 +14,10 @@
 </template>
 
 <script>
-import {useRouter} from 'vue-router'
+import { useRouter } from 'vue-router';
+
 export default {
-  name: "RecommendView",
+  name: 'RecommendView',
   props: {
     recommends: {
       type: Array,
@@ -29,11 +30,11 @@ export default {
   setup() {
     const router = useRouter();
     const goDetail = (id) => {
-      router.push({path: '/detail', query: {id: id}})
-    }
+      router.push({ path: '/detail', query: { id } });
+    };
 
-    return {goDetail};
-  }
+    return { goDetail };
+  },
 };
 </script>
 

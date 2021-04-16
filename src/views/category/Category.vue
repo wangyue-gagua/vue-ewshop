@@ -66,39 +66,41 @@
 </template>
 
 <script lang="ts">
-import NavBar from "components/common/navbar/NavBar.vue";
-import UpBack from "components/common/upback/UpBack.vue";
-import {getCategory, getCategoryGoods} from "@/network/category";
-import {ref, reactive, onMounted, computed, watchEffect, defineComponent} from "vue";
-import {useRouter} from "vue-router";
+import NavBar from 'components/common/navbar/NavBar.vue';
+import UpBack from 'components/common/upback/UpBack.vue';
+import { getCategory, getCategoryGoods } from '@/network/category';
+import {
+  ref, reactive, onMounted, computed, watchEffect, defineComponent,
+} from 'vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   setup() {
     const active = ref(0);
-    let categories = ref([]);
-    let activeName = ref("1");
-    let active_tab = ref(0);
-    let currentOrder = ref<"sales" | "price" | "comments_count">("sales");
-    let currentId = ref(0);
-    let isShowBackTop = ref(false);
-    let router = useRouter();
+    const categories = ref([]);
+    const activeName = ref('1');
+    const activeTab = ref(0);
+    const currentOrder = ref<'sales' | 'price' | 'comments_count'>('sales');
+    const currentId = ref(0);
+    const isShowBackTop = ref(false);
+    const router = useRouter();
     // data model
     const GOODSDATA = {
-      "id": 1,
-      "title": "《产品经理手册》",
-      "price": 45,
-      "cover": "product/2020-0820-5f3e17d6ed7e8.png",
-      "category_id": 21,
-      "sales": 0,
-      "updated_at": "2021-01-04T00:16:39.000000Z",
-      "comments_count": 0,
-      "collects_count": 0,
-      "cover_url": "https://wqqx2020.oss-cn-beijing.aliyuncs.com/product/2020-0820-5f3e17d6ed7e8.png"
-    }
+      id: 1,
+      title: '《产品经理手册》',
+      price: 45,
+      cover: 'product/2020-0820-5f3e17d6ed7e8.png',
+      category_id: 21,
+      sales: 0,
+      updated_at: '2021-01-04T00:16:39.000000Z',
+      comments_count: 0,
+      collects_count: 0,
+      cover_url: 'https://wqqx2020.oss-cn-beijing.aliyuncs.com/product/2020-0820-5f3e17d6ed7e8.png',
+    };
     const goods = reactive({
-      sales: {page: 1, list: [GOODSDATA]},
-      price: {page: 1, list: [GOODSDATA]},
-      comments_count: {page: 1, list: [GOODSDATA]},
+      sales: { page: 1, list: [GOODSDATA] },
+      price: { page: 1, list: [GOODSDATA] },
+      comments_count: { page: 1, list: [GOODSDATA] },
     });
 
     const state = reactive({
@@ -108,17 +110,17 @@ export default defineComponent({
     });
 
     const init = () => {
-      getCategoryGoods("sales", currentId.value).then((res) => {
+      getCategoryGoods('sales', currentId.value).then((res) => {
         goods.sales.list = res.data.goods.data;
         goods.sales.page = 1;
       });
 
-      getCategoryGoods("price", currentId.value).then((res) => {
+      getCategoryGoods('price', currentId.value).then((res) => {
         goods.price.list = res.data.goods.data;
-        goods.price.page = 1
+        goods.price.page = 1;
       });
 
-      getCategoryGoods("comments_count", currentId.value).then((res) => {
+      getCategoryGoods('comments_count', currentId.value).then((res) => {
         goods.comments_count.list = res.data.goods.data;
         goods.comments_count.page = 1;
       });
@@ -128,7 +130,6 @@ export default defineComponent({
       // bs.scrollTo(0, 0, 500);
     };
 
-
     onMounted(() => {
       getCategory().then((res) => {
         categories.value = res.data.categories;
@@ -137,27 +138,25 @@ export default defineComponent({
     });
 
     const onLoad = () => {
-      let page = goods[currentOrder.value].page + 1;
+      const page = goods[currentOrder.value].page + 1;
       getCategoryGoods(currentOrder.value, currentId.value, page).then(
-          (res) => {
-            if (res.data.goods.next_page_url === null) {
-              state.finished = true;
-            } else {
-              goods[currentOrder.value].list.push(...res.data.goods.data);
-              goods[currentOrder.value].page += 1;
-              state.loading = false;
-              console.log("current page:" + page);
-            }
+        (res) => {
+          if (res.data.goods.next_page_url === null) {
+            state.finished = true;
+          } else {
+            goods[currentOrder.value].list.push(...res.data.goods.data);
+            goods[currentOrder.value].page += 1;
+            state.loading = false;
+            console.log(`current page:${page}`);
           }
+        },
       );
-    }
+    };
 
-    const showGoods = computed(() => {
-      return goods[currentOrder.value].list;
-    });
+    const showGoods = computed(() => goods[currentOrder.value].list);
     // sort tabs
     const TabClick = (index: number) => {
-      const orders = ["sales", "price", "comments_count"] as const;
+      const orders = ['sales', 'price', 'comments_count'] as const;
       currentOrder.value = orders[index];
     };
     // get goods by category
@@ -169,16 +168,16 @@ export default defineComponent({
     };
 
     watchEffect(() => {
-/*      nextTick(() => {
+      /*      nextTick(() => {
         // bs && bs.refresh();
         onLoad();
-      });*/
+      }); */
     });
 
     return {
       active,
       activeName,
-      active_tab,
+      active_tab: activeTab,
       categories,
       TabClick,
       getGoods,
@@ -190,8 +189,8 @@ export default defineComponent({
       isShowBackTop,
       goDetail: (id: number) => {
         router.push({
-          path: "/detail",
-          query: {id},
+          path: '/detail',
+          query: { id },
         });
       },
     };

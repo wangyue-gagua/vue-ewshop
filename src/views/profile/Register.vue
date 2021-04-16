@@ -67,32 +67,33 @@
   </div>
 </template>
 <script>
-import NavBar from "components/common/navbar/NavBar.vue";
-import { register } from "network/user";
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
-import { Notify, Toast } from "vant";
+import NavBar from 'components/common/navbar/NavBar.vue';
+import { register } from 'network/user';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { Notify, Toast } from 'vant';
+
 export default {
-  name: "Register",
+  name: 'Register',
   components: { NavBar },
   setup() {
-    let router = useRouter();
+    const router = useRouter();
     const userInfo = reactive({
-      name: "",
-      password: "",
-      password_confirmation: "",
-      email: "",
+      name: '',
+      password: '',
+      password_confirmation: '',
+      email: '',
     });
     const onSubmit = (values) => {
       if (userInfo.password !== userInfo.password_confirmation) {
-        Notify("两次密码不一致！");
+        Notify('两次密码不一致！');
       } else {
         register(userInfo).then((res) => {
-          if (res.status == 201) {
-              // gagua 123456 1234567@edu.cn
-            Toast.success("注册成功");
+          if (res.status === 201) {
+            // gagua 123456 1234567@edu.cn
+            Toast.success('注册成功');
             setTimeout(() => {
-              router.push({path:"/login"});
+              router.push({ path: '/login' });
             }, 1000);
           }
         });

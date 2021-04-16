@@ -66,36 +66,39 @@
   </div>
 </template>
 
- <script>
-import NavBar from "components/common/navbar/NavBar.vue";
+<script>
+import NavBar from 'components/common/navbar/NavBar.vue';
 import {
   getOrderDetail,
   payOrder,
   payOrderStatus,
   confirmOrder,
-} from "network/order";
-import { toRefs, onMounted, reactive, computed } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { Dialog, Toast } from "vant";
+} from 'network/order';
+import {
+  toRefs, onMounted, reactive, computed,
+} from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { Dialog, Toast } from 'vant';
+
 export default {
-  name: "OrderDetail",
+  name: 'OrderDetail',
   components: { NavBar },
   setup() {
     const route = useRoute();
     const router = useRouter();
     const state = reactive({
-      orderId: "",
+      orderId: '',
       detail: {
         orderDetails: {
           data: [],
         },
         status: 0,
-        order_no: "",
-        created_at: "",
-        express_type: "",
+        order_no: '',
+        created_at: '',
+        express_type: '',
       },
       showPay: false,
-      ali_qr: "",
+      ali_qr: '',
     });
     const init = () => {
       const { id } = route.query;
@@ -106,17 +109,17 @@ export default {
       });
     };
     onMounted(() => {
-      Toast.loading({ message: "加载中", forbidClick: true });
+      Toast.loading({ message: '加载中', forbidClick: true });
       init();
       Toast.clear();
     });
     const payStatus = computed(() => {
       const mapping = {
-        1: "新订单",
-        2: "支付完成",
-        3: "已发货",
-        4: "已确认收货",
-        5: "已过期",
+        1: '新订单',
+        2: '支付完成',
+        3: '已发货',
+        4: '已确认收货',
+        5: '已过期',
       };
       return mapping[state.detail.status];
     });
@@ -130,14 +133,14 @@ export default {
     });
     const showPayFn = () => {
       state.showPay = true;
-      payOrder(state.orderId, { type: "aliyun" }).then((res) => {
+      payOrder(state.orderId, { type: 'aliyun' }).then((res) => {
         state.ali_qr = res.qr_code_url;
       });
       // 轮询请求
       const timer = setInterval(() => {
         payOrderStatus(state.orderId).then((res) => {
           if (res === 2) {
-            Toast.success("支付成功");
+            Toast.success('支付成功');
             state.showPay = false;
             clearInterval(timer);
             init();
@@ -147,12 +150,12 @@ export default {
     };
 
     const handleConfirmOrder = () => {
-      Dialog.confirm({ title: "是否确认订单" }).then(() => {
+      Dialog.confirm({ title: '是否确认订单' }).then(() => {
         confirmOrder(state.orderId).then((res) => {
-            Toast.success("确认成功");
-            init();
+          Toast.success('确认成功');
+          init();
         });
-      }).catch(()=> {
+      }).catch(() => {
 
       });
     };
@@ -167,7 +170,7 @@ export default {
   },
 };
 </script>
- 
+
  <style lang="scss" scoped>
 .detail-box {
   margin-top: 45px;
