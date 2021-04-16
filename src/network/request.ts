@@ -23,7 +23,8 @@ export function request(config: AxiosRequestConfig) {
   instance.interceptors.response.use(
     (res) => {
       console.log(res);
-      return res.data ? res.data : res;
+      // return res.data ? res.data : res;
+        return res;
     },
     (err) => {
       // if need authentication login

@@ -48,10 +48,9 @@ import TabControl from "components/content/tabcontrol/TabControl.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import UpBack from "components/common/upback/UpBack.vue";
 import HomeSwiper from "views/home/childcompos/HomeSwiper.vue";
-import { getHomeAllData, getHomeGoods } from "@/network/home";
+import {getHomeAllData, getHomeGoods, HomeGoods} from "@/network/home";
 import {computed, defineComponent, onMounted, reactive, ref} from "vue";
-// import BScroll from "better-scroll";
-
+import {AxiosResponse} from "axios";
 
 export default defineComponent({
   name: "home",
@@ -72,8 +71,12 @@ export default defineComponent({
       new: { page: 1, data: [] },
       recommend: { page: 1, data: [] },
     });
-    let slides = ref([]);
-    let recommends = ref([]);
+    let slides = ref([{
+      id: 0,
+      title: '',
+      img_url: '',
+    }]);
+    let recommends = ref([{id: 0, title: '', cover_url: ''}]);
     let bs = reactive({});
     let banref = ref(null);
 
@@ -82,32 +85,47 @@ export default defineComponent({
       loading: false,
       finished: false,
     });
-
+    /*interface GoodsData {
+      id: number;
+      title: string
+    }
+    interface Goods {
+      goods: {
+        current_page: number,
+        data: GoodsData[]
+      }
+    }
+    interface AxiosResponse<T = any> {
+      goods: {
+        current_page: number,
+        data: GoodsData[]
+      }
+    }*/
 
     const onLoad = () => {
       // 异步更新数据
           let page = goodsData[currentType.value].page + 1;
       console.log('currentPage' + page);
-      getHomeGoods(currentType.value, page).then((res: Ajax.AxiosResponse) => {
-            goodsData[currentType.value].data.push(...res.goods.data);
+      getHomeGoods(currentType.value, page).then((res: AxiosResponse<HomeGoods>) => {
+            goodsData[currentType.value].data.push(...res.data.goods.data);
             goodsData[currentType.value].page += 1;
             state.loading = false;
           })
     };
 
     onMounted(() => {
-      getHomeAllData().then((res) => {
-        recommends.value = res.goods.data;
-        slides.value = res.slides;
+      getHomeAllData().then((res: AxiosResponse<HomeGoods>) => {
+        recommends.value = res.data.goods.data;
+        slides.value = res.data.slides;
       });
       getHomeGoods("sales").then((res) => {
-        goodsData.sales.data = res.goods.data;
+        goodsData.sales.data = res.data.goods.data;
       });
       getHomeGoods("new").then((res) => {
-        goodsData.new.data = res.goods.data;
+        goodsData.new.data = res.data.goods.data;
       });
       getHomeGoods("recommend").then((res) => {
-        goodsData.recommend.data = res.goods.data;
+        goodsData.recommend.data = res.data.goods.data;
       });
 
       /*// build better scroll object
