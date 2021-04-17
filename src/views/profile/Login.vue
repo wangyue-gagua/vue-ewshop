@@ -60,15 +60,15 @@
     </van-form>
   </div>
 </template>
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
 import { Login } from 'network/user';
-import { reactive } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { Notify, Toast } from 'vant';
 import { useStore } from 'vuex';
 
-export default {
+export default defineComponent({
   name: 'Login',
   components: { NavBar },
   setup() {
@@ -78,10 +78,10 @@ export default {
       password: '',
       email: '',
     });
-    const onSubmit = (values) => {
+    const onSubmit = () => {
       Login(userInfo).then((res) => {
         // store access token to local storage
-        window.localStorage.setItem('access_token', res.access_token);
+        window.localStorage.setItem('access_token', res.data.access_token);
         // vuex islogin
         store.commit('setIsloggedIn', true);
 
@@ -97,7 +97,7 @@ export default {
       onSubmit,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

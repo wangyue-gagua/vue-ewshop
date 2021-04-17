@@ -2,13 +2,48 @@ import request from './request';
 
 // 提交订单
 // eslint-disable-next-line camelcase
-export function createOrder(params: { address_id: number }) {
+export function createOrder(params: { address_id: string }) {
   // address_id: id
   return request({
     url: '/api/orders',
     method: 'POST',
     params,
   });
+}
+
+export interface ORDERPREVIEW {
+  'address': [
+    {
+      'id': number,
+      'name': string,
+      'province': string,
+      'city': string,
+      'county': string,
+      'address': string,
+      'phone': string,
+      'is_default': 0|1,
+      'created_at': string,
+      'updated_at': string
+    }
+  ],
+  'carts': [
+    {
+      'id': number,
+      'user_id': number,
+      'goods_id': number,
+      'num': number,
+      'is_checked': number,
+      'created_at': string,
+      'updated_at': string,
+      'goods': {
+        'id': number,
+        'cover': string,
+        'title': string,
+        'cover_url': string,
+        price: number
+      }
+    }
+  ]
 }
 
 // order preview

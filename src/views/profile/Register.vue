@@ -76,14 +76,14 @@
     </van-form>
   </div>
 </template>
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
 import { register } from 'network/user';
-import { reactive } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { Notify, Toast } from 'vant';
 
-export default {
+export default defineComponent({
   name: 'Register',
   components: { NavBar },
   setup() {
@@ -94,7 +94,7 @@ export default {
       password_confirmation: '',
       email: '',
     });
-    const onSubmit = (values) => {
+    const onSubmit = () => {
       if (userInfo.password !== userInfo.password_confirmation) {
         Notify('两次密码不一致！');
       } else {
@@ -115,7 +115,7 @@ export default {
       onSubmit,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

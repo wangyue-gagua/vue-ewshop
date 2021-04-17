@@ -119,7 +119,7 @@ export default {
 
     onMounted(() => {
       getUser().then((res) => {
-        state.user = res;
+        state.user = res.data;
       });
     });
 

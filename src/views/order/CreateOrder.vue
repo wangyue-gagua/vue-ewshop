@@ -16,7 +16,7 @@
 
     <div class="userInfo">
       <div>
-        {{ address.name }}<span>{{ address.phone }}</span>
+        {{ Address.name }}<span>{{ Address.phone }}</span>
       </div>
       <van-icon
         name="arrow"
@@ -24,8 +24,8 @@
       />
       <br>
       <div>
-        {{ address.province }} {{ address.city }} {{ address.county }}
-        {{ address.address }}
+        {{ Address.province }} {{ Address.city }} {{ Address.county }}
+        {{ Address.address }}
       </div>
     </div>
 
@@ -66,22 +66,23 @@
     </van-popup>
   </div>
 </template>
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
 import {
   getOrderPreview,
   createOrder,
   payOrder,
-  payOrderStatus,
+  payOrderStatus, ORDERPREVIEW,
 } from 'network/order';
 import {
-  reactive, onMounted, toRefs, computed,
+  reactive, onMounted, toRefs, computed, defineComponent,
 } from 'vue';
 import { Toast } from 'vant';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { AxiosResponse } from 'axios';
 
-export default {
+export default defineComponent({
   name: 'CreateOrder',
   components: {
     NavBar,
@@ -91,8 +92,26 @@ export default {
     const router = useRouter();
     const store = useStore();
     const state = reactive({
-      cartList: [],
-      address: {
+      cartList: [
+        {
+          id: 2,
+          user_id: 1,
+          goods_id: 4,
+          num: 2,
+          is_checked: 1,
+          created_at: '',
+          updated_at: '',
+          goods: {
+            id: 4,
+            cover: '',
+            title: '',
+            cover_url: '',
+            price: 0,
+          },
+        },
+      ],
+      Address: {
+        id: 2,
         name: '',
         phone: '',
         city: '',
@@ -101,7 +120,7 @@ export default {
         address: '',
       },
       showPay: false,
-      orderId: '',
+      orderId: 0,
       ali_qr: '',
       wx_qr: '',
     });
@@ -109,18 +128,16 @@ export default {
     const init = () => {
       Toast.loading({ message: '加载中...', forbidClick: true });
 
-      getOrderPreview().then((res) => {
-        const address = res.address.filter((item) => item.is_default === 1);
+      getOrderPreview().then((res: AxiosResponse<ORDERPREVIEW>) => {
+        const address = res.data.address.filter((item) => item.is_default === 1);
         if (address.length === 0) {
-          state.address = {
-            address: '还没有默认地址，请选择或添加默认地址',
-          };
+          state.Address.address = '还没有默认地址，请选择或添加默认地址';
         } else {
           // eslint-disable-next-line prefer-destructuring
-          state.address = address[0];
+          state.Address = address[0];
         }
 
-        state.cartList = res.carts;
+        state.cartList = res.data.carts;
         Toast.clear();
       });
     };
@@ -136,29 +153,29 @@ export default {
     const total = computed(() => {
       let sum = 0;
       state.cartList.forEach((item) => {
-        sum += parseInt(item.num, 10) * parseFloat(item.goods.price);
+        sum += item.num * item.goods.price;
       });
       return sum;
     });
     const onSubmit = () => {
       const params = {
-        address_id: state.address.id,
+        address_id: state.Address.id.toString(),
       };
       createOrder(params).then((res) => {
         Toast.success('创建成功');
         store.dispatch('updateCart');
         state.showPay = true;
 
-        state.orderId = res.id;
+        state.orderId = res.data.id;
         // AliPay
         payOrder(state.orderId, { type: 'aliyun' }).then((resPay) => {
-          state.ali_qr = resPay.qr_code_url;
+          state.ali_qr = resPay.data.qr_code_url;
         });
 
         // 轮询请求
         const timer = setInterval(() => {
           payOrderStatus(state.orderId).then((resState) => {
-            if (resState === 2) {
+            if (resState.data.status === 2) {
               clearInterval(timer);
               router.push({ path: '/orderDetail', query: { id: state.orderId } });
             }
@@ -178,7 +195,7 @@ export default {
       total,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -187,12 +204,13 @@ export default {
   text-align: left;
   padding: 1.5em 1em;
   background-size: 10vw 2px;
+  //noinspection CssInvalidFunction
   background: linear-gradient(
           135deg,
-          #f05959 45%,
+          #f05959 0% 45%,
           transparent 45% 50%,
           #6363db 50% 95%,
-          transparent 95%
+          transparent 95% 100%
   ) repeat-x bottom;
 
   .van-icon {

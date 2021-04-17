@@ -77,7 +77,7 @@
 
     <div
       class="empty"
-      v-if="list.length == 0"
+      v-if="list.length === 0"
     >
       <img
         src="~assets/logo.png"
@@ -100,10 +100,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
 import {
-  ref, reactive, toRefs, onMounted, computed,
+  ref, reactive, toRefs, onMounted, computed, defineComponent,
 } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
@@ -111,13 +111,20 @@ import {
   getCart,
   deleteCartItem,
   modifyCart,
-  checkCart,
+  checkCart, CartList, CartGoods,
 } from 'network/cart';
 import {
   SwipeCell, Stepper, SubmitBar, Toast,
 } from 'vant';
+import { AxiosResponse } from 'axios';
+import CheckboxGroup from 'vant/lib/checkbox-group/CheckboxGroup';
 
-export default {
+interface CartInfo {
+  list: CartGoods[],
+  checked: any[]
+}
+
+export default defineComponent({
   name: 'ShopCart',
   components: {
     NavBar,
@@ -128,10 +135,10 @@ export default {
   setup() {
     const router = useRouter();
     const store = useStore();
-    const isAllcheck = ref(null);
-    const checkGroup = ref(null);
+    const isAllcheck = ref(false);
+    const checkGroup = ref(CheckboxGroup);
     // data model
-    const cartInfo = reactive({
+    const cartInfo = reactive<CartInfo>({
       list: [],
       checked: [],
     });
@@ -148,39 +155,47 @@ export default {
     };
 
     const init = () => {
-      Toast.loading({ message: '加载中...', forbidClick: true });
-      getCart('include=goods').then((res) => {
-        console.log(res);
-        cartInfo.list = res.data;
-        cartInfo.checked = res.data
-          .filter((item) => item.is_checked === 1)
-          .map((item) => item.id);
-
-        isAllcheck.value = cartInfo.list.length === cartInfo.checked.length;
-        Toast.clear();
+      Toast.loading({
+        message: '加载中...',
+        forbidClick: true,
       });
+      getCart('include=goods')
+        .then((res: AxiosResponse<CartList>) => {
+          console.log(res);
+          cartInfo.list = res.data.data;
+          cartInfo.checked = res.data.data
+            .filter((item) => item.is_checked === 1)
+            .map((item) => item.id);
+
+          isAllcheck.value = cartInfo.list.length === cartInfo.checked.length;
+          Toast.clear();
+        });
     };
 
     onMounted(() => {
       init();
     });
 
-    const groupChange = (names) => {
+    const groupChange = (names: any[]) => {
       cartInfo.checked = names;
       isAllcheck.value = cartInfo.list.length === names.length;
       checkCart({ cart_ids: names });
     };
-    const onChange = (value, detail) => {
-      Toast.loading({ message: '修改中', forbidClick: true });
-      modifyCart(detail.name, { num: value }).then((res) => {
-        // update list
-        // cartInfo.list.forEach((item) =>{
-        //   if(item.id==detail.name){
-        //     item.num = value
-        //   }
-        // })
-        Toast.clear();
+    const onChange = (value: string, detail: { name: string }) => {
+      Toast.loading({
+        message: '修改中',
+        forbidClick: true,
       });
+      modifyCart(parseInt(detail.name, 10), { num: parseInt(value, 10) })
+        .then((res) => {
+          // update list
+          // cartInfo.list.forEach((item) =>{
+          //   if(item.id==detail.name){
+          //     item.num = value
+          //   }
+          // })
+          Toast.clear();
+        });
     };
 
     const checkALL = () => {
@@ -192,17 +207,24 @@ export default {
       }
     };
 
-    const deleteItem = (id) => {
-      deleteCartItem(id).then((res) => {
-        init();
-        store.dispatch('updateCart');
-      });
+    const deleteItem = (id: number) => {
+      deleteCartItem(id)
+        .then(() => {
+          init();
+          store.dispatch('updateCart');
+        });
     };
 
     const total = computed(() => {
       let sum = 0;
-      cartInfo.list.filter((item) => cartInfo.checked.includes(item.id))
-        .forEach((item) => { sum += item.goods.price * item.num; });
+      if (cartInfo.list.length > 0) {
+        cartInfo.list.filter((item) => cartInfo.checked.includes(item.id))
+          .forEach((item) => {
+            if (item?.goods !== undefined) {
+              sum += item.goods.price * item.num;
+            }
+          });
+      }
       return sum;
     });
     return {
@@ -219,7 +241,7 @@ export default {
       total,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -240,6 +262,7 @@ export default {
 .check-wrapper {
   display: flex;
   text-align: left;
+
   .van-card {
     flex: 1;
   }
