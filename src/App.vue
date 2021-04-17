@@ -3,41 +3,65 @@
   <router-view v-slot="{ Component }">
     <transition>
       <keep-alive>
-        <component :is="Component"/>
+        <component :is="Component" />
       </keep-alive>
     </transition>
   </router-view>
 
   <div id="nav">
-    <router-link to="/" class="tab-bar-item">
-      <svg class="icon tab-bar-icon" aria-hidden="true">
-        <use xlink:href="#icon-Homehomepagemenu"></use>
+    <router-link
+      to="/"
+      class="tab-bar-item"
+    >
+      <svg
+        class="icon tab-bar-icon"
+        aria-hidden="true"
+      >
+        <use xlink:href="#icon-Homehomepagemenu" />
       </svg>
       <div>首页</div>
     </router-link>
-    <router-link to="/category" class="tab-bar-item">
-      <svg class="icon tab-bar-icon" aria-hidden="true">
-        <use xlink:href="#icon-category"></use>
+    <router-link
+      to="/category"
+      class="tab-bar-item"
+    >
+      <svg
+        class="icon tab-bar-icon"
+        aria-hidden="true"
+      >
+        <use xlink:href="#icon-category" />
       </svg>
       <div>分类</div>
-    </router-link
+    </router-link>
+    <router-link
+      to="/shopCart"
+      class="tab-bar-item"
     >
-    <router-link to="/shopCart" class="tab-bar-item">
-      <van-badge :content="$store.state.user.countCart" max="9">
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-shop-cart-"></use>
+      <van-badge
+        :content="$store.state.user.countCart"
+        max="9"
+      >
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-shop-cart-" />
         </svg>
       </van-badge>
       <div>购物车</div>
-    </router-link
+    </router-link>
+    <router-link
+      to="/profile"
+      class="tab-bar-item"
     >
-    <router-link to="/profile" class="tab-bar-item">
-      <svg class="icon tab-bar-icon" aria-hidden="true">
-        <use xlink:href="#icon-04"></use>
+      <svg
+        class="icon tab-bar-icon"
+        aria-hidden="true"
+      >
+        <use xlink:href="#icon-04" />
       </svg>
       <div>我的</div>
-    </router-link
-    >
+    </router-link>
   </div>
 </template>
 

@@ -1,12 +1,17 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>购物车</template>
+      <template #middle>
+        购物车
+      </template>
     </nav-bar>
     <div class="checkbody">
       <van-checkbox-group
@@ -14,7 +19,10 @@
         @change="groupChange"
         ref="checkGroup"
       >
-        <van-swipe-cell v-for="(item, index) of list" :key="index">
+        <van-swipe-cell
+          v-for="(item, index) of list"
+          :key="index"
+        >
           <div class="check-wrapper">
             <van-checkbox :name="item.id" />
             <van-card
@@ -25,14 +33,17 @@
               class="goods-card"
               :thumb="item.goods.cover_url"
             >
-              <template #footer
-                ><van-stepper
+              <template
+                #footer
+              >
+                <van-stepper
                   v-model="item.num"
                   :max="item.goods.stock"
                   :name="item.id"
                   integer
                   @change="onChange"
-              /></template>
+                />
+              </template>
             </van-card>
           </div>
 
@@ -48,19 +59,43 @@
         </van-swipe-cell>
       </van-checkbox-group>
     </div>
-    <van-submit-bar :price="total * 100" button-text="提交订单" @submit="onSubmit">
-      <van-checkbox @click="checkALL" v-model="isAllcheck">全选</van-checkbox>
+    <van-submit-bar
+      :price="total * 100"
+      button-text="提交订单"
+      @submit="onSubmit"
+    >
+      <van-checkbox
+        @click="checkALL"
+        v-model="isAllcheck"
+      >
+        全选
+      </van-checkbox>
       <!-- <template #tip>
         你的收货地址不支持同城送, <span @click="onClickLink">修改地址</span>
       </template> -->
     </van-submit-bar>
 
-    <div class="empty" v-if="list.length == 0">
-      <img src="~assets/logo.png" alt="empty shop cart" class="empty-cart" />
-      <div class="title">购物车空空如也</div>
-      <van-button round color="#1baeae" type="primary" block @click="goToShop"
-        >前往选购</van-button
+    <div
+      class="empty"
+      v-if="list.length == 0"
+    >
+      <img
+        src="~assets/logo.png"
+        alt="empty shop cart"
+        class="empty-cart"
       >
+      <div class="title">
+        购物车空空如也
+      </div>
+      <van-button
+        round
+        color="#1baeae"
+        type="primary"
+        block
+        @click="goToShop"
+      >
+        前往选购
+      </van-button>
     </div>
   </div>
 </template>
@@ -95,6 +130,11 @@ export default {
     const store = useStore();
     const isAllcheck = ref(null);
     const checkGroup = ref(null);
+    // data model
+    const cartInfo = reactive({
+      list: [],
+      checked: [],
+    });
     const onSubmit = () => {
       if (cartInfo.checked.length === 0) {
         Toast.fail('请选择商品');
@@ -106,11 +146,6 @@ export default {
     const goToShop = () => {
       router.push({ path: '/home' });
     };
-    // data model
-    const cartInfo = reactive({
-      list: [],
-      checked: [],
-    });
 
     const init = () => {
       Toast.loading({ message: '加载中...', forbidClick: true });
@@ -166,7 +201,8 @@ export default {
 
     const total = computed(() => {
       let sum = 0;
-      cartInfo.list.filter((item) => cartInfo.checked.includes(item.id)).forEach((item) => sum += item.goods.price * item.num);
+      cartInfo.list.filter((item) => cartInfo.checked.includes(item.id))
+        .forEach((item) => { sum += item.goods.price * item.num; });
       return sum;
     });
     return {

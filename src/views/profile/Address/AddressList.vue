@@ -1,12 +1,17 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>地址管理</template>
+      <template #middle>
+        地址管理
+      </template>
     </nav-bar>
 
     <van-address-list

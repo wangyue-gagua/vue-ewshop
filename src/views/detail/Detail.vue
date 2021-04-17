@@ -1,49 +1,79 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>商品详情: {{ id }}</template>
+      <template #middle>
+        商品详情: {{ id }}
+      </template>
     </nav-bar>
 
     <van-image
-        style="margin-top: 50px"
-        width="200"
-        lazy-load
-        :src="goods.cover_url"
+      style="margin-top: 50px"
+      width="200"
+      lazy-load
+      :src="goods.cover_url"
     />
 
     <van-card
-        style="text-align: left"
-        :num="goods.stock"
-        :price="goods.price"
-        :desc="goods.description"
-        :title="goods.title"
+      style="text-align: left"
+      :num="goods.stock"
+      :price="goods.price"
+      :desc="goods.description"
+      :title="goods.title"
     >
       <template #tags>
-        <van-tag plain type="danger">标签</van-tag>
-        <van-tag plain type="danger">标签</van-tag>
+        <van-tag
+          plain
+          type="danger"
+        >
+          标签
+        </van-tag>
+        <van-tag
+          plain
+          type="danger"
+        >
+          标签
+        </van-tag>
       </template>
       <template #footer>
-        <van-button type="warning" @click="handleAddCart">添加</van-button>
-        <van-button type="danger" @click="goToCart">购买</van-button>
+        <van-button
+          type="warning"
+          @click="handleAddCart"
+        >
+          添加
+        </van-button>
+        <van-button
+          type="danger"
+          @click="goToCart"
+        >
+          购买
+        </van-button>
       </template>
     </van-card>
 
     <van-tabs v-model:active="active">
-      <van-tab title="概述"
+      <van-tab
+        title="概述"
       >
-        <div id="html_content" v-html="goods.details"></div
-        >
+        <div
+          id="html_content"
+          v-html="goods.details"
+        />
       </van-tab>
-      <van-tab title="热评">内容 2</van-tab>
-      <van-tab title="相关图书"
+      <van-tab title="热评">
+        内容 2
+      </van-tab>
+      <van-tab
+        title="相关图书"
       >
-        <goods-list :goodsData="like_goods"></goods-list
-        >
+        <goods-list :goods-data="like_goods" />
       </van-tab>
     </van-tabs>
   </div>

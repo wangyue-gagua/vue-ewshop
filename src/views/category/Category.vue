@@ -1,36 +1,50 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>商品分类</template>
+      <template #middle>
+        商品分类
+      </template>
     </nav-bar>
 
     <div id="mainbox">
       <div class="ordertab">
-        <van-tabs v-model:active="active_tab" @click="TabClick">
-          <van-tab title="销量排序"></van-tab>
-          <van-tab title="价格排序"></van-tab>
-          <van-tab title="评价排序"></van-tab>
+        <van-tabs
+          v-model:active="active_tab"
+          @click="TabClick"
+        >
+          <van-tab title="销量排序" />
+          <van-tab title="价格排序" />
+          <van-tab title="评价排序" />
         </van-tabs>
       </div>
 
-      <van-sidebar v-model="active" class="leftmenu">
-        <van-collapse v-model="activeName" accordion>
+      <van-sidebar
+        v-model="active"
+        class="leftmenu"
+      >
+        <van-collapse
+          v-model="activeName"
+          accordion
+        >
           <van-collapse-item
-              v-for="item of categories"
-              :key="item.id"
-              :title="item.name"
-              :name="item.id"
+            v-for="item of categories"
+            :key="item.id"
+            :title="item.name"
+            :name="item.id"
           >
             <van-sidebar-item
-                v-for="child of item.children"
-                :key="child.id"
-                :title="child.name"
-                @click="getGoods(child.id)"
+              v-for="child of item.children"
+              :key="child.id"
+              :title="child.name"
+              @click="getGoods(child.id)"
             />
           </van-collapse-item>
         </van-collapse>
@@ -39,29 +53,33 @@
       <div class="goods-list">
         <div class="content">
           <van-list
-              v-model:loading="state.loading"
-              :finished="state.finished"
-              finished-text="没有更多了"
-              @load="onLoad"
+            v-model:loading="state.loading"
+            :finished="state.finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+            :immediate-check="false"
           >
             <van-card
-                @click="goDetail(item.id)"
-                v-for="(item, index) of showGoods"
-                :key="index"
-                :num="item.collects_count"
-                :tag="item.collects_count >= 3 ? 'hot' : 'new'"
-                :price="item.price"
-                :desc="item.updated_at"
-                :title="item.title"
-                :thumb="item.cover_url"
-                :lazy-load="true"
-                origin-price="10.00"
+              @click="goDetail(item.id)"
+              v-for="(item, index) of showGoods"
+              :key="index"
+              :num="item.collects_count"
+              :tag="item.collects_count >= 3 ? 'hot' : 'new'"
+              :price="item.price"
+              :desc="item.updated_at"
+              :title="item.title"
+              :thumb="item.cover_url"
+              :lazy-load="true"
+              origin-price="10.00"
             />
           </van-list>
         </div>
       </div>
     </div>
-    <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
+    <up-back
+      v-show="isShowBackTop"
+      @bTop="bTop"
+    />
   </div>
 </template>
 
@@ -87,15 +105,15 @@ export default defineComponent({
     // data model
     const GOODSDATA = {
       id: 1,
-      title: '《产品经理手册》',
-      price: 45,
-      cover: 'product/2020-0820-5f3e17d6ed7e8.png',
+      title: '',
+      price: 0,
+      cover: '',
       category_id: 21,
       sales: 0,
-      updated_at: '2021-01-04T00:16:39.000000Z',
+      updated_at: '',
       comments_count: 0,
       collects_count: 0,
-      cover_url: 'https://wqqx2020.oss-cn-beijing.aliyuncs.com/product/2020-0820-5f3e17d6ed7e8.png',
+      cover_url: '',
     };
     const goods = reactive({
       sales: { page: 1, list: [GOODSDATA] },

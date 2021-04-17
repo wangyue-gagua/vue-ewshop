@@ -5,8 +5,14 @@
       v-for="item of recommends.slice(0, 4)"
       :key="item.id"
     >
-      <a href="" @click.prevent="goDetail(item.id)">
-        <img v-lazy="item.cover_url" alt="" />
+      <a
+        href=""
+        @click.prevent="goDetail(item.id)"
+      >
+        <img
+          v-lazy="item.cover_url"
+          alt=""
+        >
         <div>{{ item.title }}</div>
       </a>
     </div>

@@ -1,8 +1,17 @@
 <template>
   <div class="nav-bar">
-    <div class="left" @click="goBack"><slot name="left"></slot></div>
-    <div class="middle"><slot name="middle"></slot></div>
-    <div class="right"><slot name="right"></slot></div>
+    <div
+      class="left"
+      @click="goBack"
+    >
+      <slot name="left" />
+    </div>
+    <div class="middle">
+      <slot name="middle" />
+    </div>
+    <div class="right">
+      <slot name="right" />
+    </div>
   </div>
 </template>
 

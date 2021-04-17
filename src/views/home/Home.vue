@@ -1,33 +1,44 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>商品首页</template>
+      <template #middle>
+        商品首页
+      </template>
     </nav-bar>
     <tab-control
-        v-show="isTabFixed"
-        :titles="tab_title"
-        @tabClick="TabClick"
-    ></tab-control>
+      v-show="isTabFixed"
+      :titles="tab_title"
+      @tabClick="TabClick"
+    />
 
     <van-list
-        v-model:loading="state.loading"
-        :finished="state.finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        :immediate-check="false"
+      v-model:loading="state.loading"
+      :finished="state.finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+      :immediate-check="false"
     >
-      <HomeSwiper :slides="slides"></HomeSwiper>
-      <recommend-view :recommends="recommends"></recommend-view>
-      <tab-control :titles="tab_title" @tabClick="TabClick"></tab-control>
-      <goods-list :goodsData="ShowGoodsData"></goods-list>
+      <HomeSwiper :slides="slides" />
+      <recommend-view :recommends="recommends" />
+      <tab-control
+        :titles="tab_title"
+        @tabClick="TabClick"
+      />
+      <goods-list :goods-data="ShowGoodsData" />
     </van-list>
 
-    <up-back v-show="isShowBackTop" @bTop="bTop"></up-back>
+    <up-back
+      v-show="isShowBackTop"
+      @bTop="bTop"
+    />
   </div>
 </template>
 
@@ -47,7 +58,7 @@ import { AxiosResponse } from 'axios';
 import RecommendView from './childcompos/RecommendView.vue';
 
 export default defineComponent({
-  name: 'home',
+  name: 'Home',
   setup() {
     const TabTitle = ['畅销', '新书', '精选'];
     const TabTitleEN = ['sales', 'new', 'recommend'] as const;
@@ -86,7 +97,6 @@ export default defineComponent({
       title: '',
       cover_url: '',
     }]);
-    const bs = reactive({});
     const banref = ref(null);
 
     const state = reactive({
@@ -129,33 +139,6 @@ export default defineComponent({
         .then((res) => {
           goodsData.recommend.data = res.data.goods.data;
         });
-
-      /* // build better scroll object
-      bs = new BScroll(document.querySelector(".wrapper"), {
-        // ...
-        probeType: 3,
-        click: true,
-        pullUpLoad: true,
-        // wheel: true,
-        // scrollbar: true,
-        // and so on
-      });
-      bs.on("scroll", (position) => {
-        isShowBackTop.value = isTabFixed.value =
-          -position.y > banref.value.offsetHeight;
-      });
-      // pullingUp for more data info
-      bs.on("pullingUp", () => {
-        let page = goodsData[currentType.value].page + 1;
-        getHomeGoods(currentType.value, page).then((res) => {
-          goodsData[currentType.value].data.push(...res.goods.data);
-          goodsData[currentType.value].page += 1;
-        });
-        bs.finishPullUp();
-        bs && bs.refresh();
-
-        // finish pullingUp and present data info
-      }); */
     });
 
     const TabClick = (index: number) => {
@@ -166,17 +149,7 @@ export default defineComponent({
 
       state.loading = true;
       onLoad();
-      /* nextTick(() => {
-        bs && bs.refresh();
-      }); */
     };
-
-    /*    // listen any variable changes
-    watchEffect(() => {
-      nextTick(() => {
-        bs && bs.refresh();
-      });
-    }); */
 
     const bTop = () => {
       // bs.scrollTo(0, 0, 500);
@@ -191,7 +164,6 @@ export default defineComponent({
       isShowBackTop,
       banref,
       bTop,
-      bs,
       state,
       onLoad,
     };

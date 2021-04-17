@@ -1,20 +1,28 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>订单预览</template>
+      <template #middle>
+        订单预览
+      </template>
     </nav-bar>
 
     <div class="userInfo">
       <div>
         {{ address.name }}<span>{{ address.phone }}</span>
       </div>
-      <van-icon name="arrow" @click="goTo" />
-      <br />
+      <van-icon
+        name="arrow"
+        @click="goTo"
+      />
+      <br>
       <div>
         {{ address.province }} {{ address.city }} {{ address.county }}
         {{ address.address }}
@@ -46,7 +54,10 @@
       position="bottom"
       :style="{ height: '40%' }"
     >
-      <van-grid :border="false" :column-num="1">
+      <van-grid
+        :border="false"
+        :column-num="1"
+      >
         <van-grid-item>
           支付宝二维码
           <van-image :src="ali_qr" />
@@ -140,14 +151,14 @@ export default {
 
         state.orderId = res.id;
         // AliPay
-        payOrder(state.orderId, { type: 'aliyun' }).then((res) => {
-          state.ali_qr = res.qr_code_url;
+        payOrder(state.orderId, { type: 'aliyun' }).then((resPay) => {
+          state.ali_qr = resPay.qr_code_url;
         });
 
         // 轮询请求
         const timer = setInterval(() => {
-          payOrderStatus(state.orderId).then((res) => {
-            if (res === 2) {
+          payOrderStatus(state.orderId).then((resState) => {
+            if (resState === 2) {
               clearInterval(timer);
               router.push({ path: '/orderDetail', query: { id: state.orderId } });
             }
@@ -175,16 +186,14 @@ export default {
   margin-top: 45px;
   text-align: left;
   padding: 1.5em 1em;
-  background: linear-gradient(
-    135deg,
-    #f05959 45%,
-    transparent 45% 50%,
-    #6363db 50% 95%,
-    transparent 95% 100%
-  );
   background-size: 10vw 2px;
-  background-repeat: repeat-x;
-  background-position: bottom;
+  background: linear-gradient(
+          135deg,
+          #f05959 45%,
+          transparent 45% 50%,
+          #6363db 50% 95%,
+          transparent 95%
+  ) repeat-x bottom;
 
   .van-icon {
     float: right;

@@ -1,17 +1,26 @@
- <template>
+<template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>订单详情</template>
+      <template #middle>
+        订单详情
+      </template>
     </nav-bar>
 
     <div class="detail-box">
-      <div class="text-line"><span>订单状态： </span>{{ payStatus }}</div>
-      <div class="text-line"><span>订单编号： </span>{{ detail.order_no }}</div>
+      <div class="text-line">
+        <span>订单状态： </span>{{ payStatus }}
+      </div>
+      <div class="text-line">
+        <span>订单编号： </span>{{ detail.order_no }}
+      </div>
       <div class="text-line">
         <span>下单时间： </span>{{ detail.created_at }}
       </div>
@@ -20,8 +29,9 @@
         @click="showPayFn"
         type="primary"
         block
-        >去支付</van-button
       >
+        去支付
+      </van-button>
       <van-button
         v-if="detail.status === 2"
         @click="handleConfirmOrder"
@@ -29,10 +39,13 @@
         type="primary"
         block
         id="confirm-btn"
-        >确认订单</van-button
       >
+        确认订单
+      </van-button>
       <div id="order">
-        <div class="text-line"><span>商品金额： </span>￥{{ total }}.00</div>
+        <div class="text-line">
+          <span>商品金额： </span>￥{{ total }}.00
+        </div>
         <div class="text-line">
           <span>配送方式： </span>{{ detail.express_type }}
         </div>
@@ -55,7 +68,10 @@
         position="bottom"
         :style="{ height: '40%' }"
       >
-        <van-grid :border="false" :column-num="1">
+        <van-grid
+          :border="false"
+          :column-num="1"
+        >
           <van-grid-item>
             支付宝二维码
             <van-image :src="ali_qr" />
@@ -127,7 +143,7 @@ export default {
     const total = computed(() => {
       let sum = 0;
       state.detail.orderDetails.data.forEach((item) => {
-        sum += parseInt(item.num) * parseFloat(item.goods.price);
+        sum += parseInt(item.num, 10) * parseFloat(item.goods.price);
       });
       return sum;
     });
@@ -155,8 +171,6 @@ export default {
           Toast.success('确认成功');
           init();
         });
-      }).catch(() => {
-
       });
     };
 

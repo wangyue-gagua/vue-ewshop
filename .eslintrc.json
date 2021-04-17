@@ -5,10 +5,10 @@
     "node": true
   },
   "extends": [
-//    "plugin:vue/essential",
     "plugin:vue/base",
-    "airbnb-base",
     "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-strongly-recommended",
+//    "airbnb-base",
     "@vue/airbnb",
     "@vue/typescript/recommended"
   ],
@@ -21,6 +21,8 @@
     "vue",
     "@typescript-eslint"
   ],
-  "rules": {},
+  "rules": {
+    "linebreak-style":[0,"error","window"]
+  },
   "root": true
 }

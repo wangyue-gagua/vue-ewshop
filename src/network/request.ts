@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { Notify, Toast } from 'vant';
+
 // eslint-disable-next-line import/no-cycle
 import router from '../router';
 
@@ -10,12 +11,13 @@ export default function request(config: AxiosRequestConfig) {
   });
   // interceptors
   instance.interceptors.request.use(
-    (conf) => {
+    // eslint-disable-next-line no-shadow
+    (config) => {
       // if need authentication to access an api
       const token = window.localStorage.getItem('access_token');
       if (token) {
         // eslint-disable-next-line no-param-reassign
-        conf.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${token}`;
       }
       // permit through
       return config;
@@ -27,14 +29,13 @@ export default function request(config: AxiosRequestConfig) {
 
   instance.interceptors.response.use(
     (res) => {
-      console.log(res.data);
+      console.log(res);
       // return res.data ? res.data : res;
       return res;
     },
     (err) => {
       // if need authentication login
-      console.log(err);
-      /* if (err.response?.status === 401) {
+      if (err.response?.status === 401) {
         Toast.fail('请先登录');
         setTimeout(() => {
           router.push({ path: '/login' });
@@ -43,7 +44,7 @@ export default function request(config: AxiosRequestConfig) {
       // handling error message
       Notify(
         err.response.data.errors[Object.keys(err.response.data.errors)[0]][0],
-      ); */
+      );
     },
   );
 

@@ -20,7 +20,7 @@ export function getOrderPreview() {
 }
 
 // order pay
-export function payOrder(order: number, params: 'aliyun' | 'wechat') {
+export function payOrder(order: number, params: {type: 'aliyun' | 'wechat'}) {
   return request({
     url: `/api/orders/${order}/pay`,
     method: 'GET',

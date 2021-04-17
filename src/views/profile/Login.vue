@@ -1,12 +1,17 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>用户注册</template>
+      <template #middle>
+        用户注册
+      </template>
     </nav-bar>
 
     <van-image
@@ -35,7 +40,10 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
 
-      <div class="login" @click="$router.push({ path: '/register' })">
+      <div
+        class="login"
+        @click="$router.push({ path: '/register' })"
+      >
         没有账号，前往注册
       </div>
       <div style="margin: 16px">

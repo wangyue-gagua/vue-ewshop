@@ -1,18 +1,26 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>个人中心</template>
+      <template #middle>
+        个人中心
+      </template>
     </nav-bar>
 
     <div class="user-box">
       <div class="user-info">
         <div class="info">
-          <img src="~assets/logo.png" alt="用户头像" />
+          <img
+            src="~assets/logo.png"
+            alt="用户头像"
+          >
           <div class="user-desc">
             <span>昵称： gagua</span>
             <span>登录名: 1234567@edu.cn</span>
@@ -22,32 +30,52 @@
       </div>
 
       <ul class="user-list">
-        <li class="van-hairline--bottom" @click="jumpTo('/collect')">
+        <li
+          class="van-hairline--bottom"
+          @click="jumpTo('/collect')"
+        >
           <span>我的收藏</span>
           <van-icon name="arrow" />
         </li>
-        <li class="van-hairline--bottom" @click="jumpTo('/order')">
+        <li
+          class="van-hairline--bottom"
+          @click="jumpTo('/order')"
+        >
           <span>我的订单</span>
           <van-icon name="arrow" />
         </li>
-        <li class="van-hairline--bottom" @click="jumpTo('/manage')">
+        <li
+          class="van-hairline--bottom"
+          @click="jumpTo('/manage')"
+        >
           <span>账号管理</span>
           <van-icon name="arrow" />
         </li>
-        <li class="van-hairline--bottom" @click="jumpTo('/address-list')">
+        <li
+          class="van-hairline--bottom"
+          @click="jumpTo('/address-list')"
+        >
           <span>地址管理</span>
           <van-icon name="arrow" />
         </li>
-        <li class="van-hairline--bottom" @click="jumpTo('/about')">
+        <li
+          class="van-hairline--bottom"
+          @click="jumpTo('/about')"
+        >
           <span>关于我们</span>
           <van-icon name="arrow" />
         </li>
       </ul>
     </div>
 
-    <van-button @click="logout" round block color="var(--color-tint)"
-      >退出登录</van-button
+    <van-button
+      @click="logout"
+      round
+      block
+      color="var(--color-tint)"
     >
+      退出登录
+    </van-button>
   </div>
 </template>
 
@@ -73,7 +101,7 @@ export default {
     };
     const logout = () => {
       Logout().then((res) => {
-        if (res.status == 204) {
+        if (res.status === 204) {
           Toast.success('成功退出');
           window.localStorage.removeItem('access_token');
           store.commit('setIsloggedIn', false);

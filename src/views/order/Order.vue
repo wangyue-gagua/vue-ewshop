@@ -1,24 +1,35 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>订单列表</template>
+      <template #middle>
+        订单列表
+      </template>
     </nav-bar>
-    <van-tabs v-model:active="active" @click="onTabChange">
-      <van-tab title="全部"></van-tab>
-      <van-tab title="待付款"></van-tab>
-      <van-tab title="已支付"></van-tab>
-      <van-tab title="发货"></van-tab>
-      <van-tab title="交易完成"></van-tab>
-      <van-tab title="过期"></van-tab>
+    <van-tabs
+      v-model:active="active"
+      @click="onTabChange"
+    >
+      <van-tab title="全部" />
+      <van-tab title="待付款" />
+      <van-tab title="已支付" />
+      <van-tab title="发货" />
+      <van-tab title="交易完成" />
+      <van-tab title="过期" />
     </van-tabs>
 
     <div class="content">
-      <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+      <van-pull-refresh
+        v-model="refreshing"
+        @refresh="onRefresh"
+      >
         <van-list
           v-model:loading="loading"
           :finished="finished"

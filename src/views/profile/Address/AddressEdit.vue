@@ -1,12 +1,17 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>{{ title }}</template>
+      <template #middle>
+        {{ title }}
+      </template>
     </nav-bar>
 
     <van-address-edit
@@ -25,7 +30,7 @@
 </template>
 <script>
 import NavBar from 'components/common/navbar/NavBar.vue';
-import { areaList } from 'utils/area.ts';
+import areaList from 'utils/area';
 import {
   addAddress,
   getAddressDetails,
@@ -61,8 +66,7 @@ export default {
 
       if (type === 'edit') {
         getAddressDetails(addressId).then((res) => {
-          console.log(res);
-          const _areaCode = Object.keys(areaList.county_list).find(
+          const areaCode = Object.keys(areaList.county_list).find(
             (key) => areaList.county_list[key] === res.county,
           );
 
@@ -74,7 +78,7 @@ export default {
             county: res.county,
             addressDetail: res.address,
             isDefault: !!res.is_default,
-            areaCode: _areaCode,
+            areaCode,
           };
         });
       }

@@ -1,12 +1,17 @@
 <template>
   <div>
     <nav-bar>
-      <template v-slot:left>
-        <svg class="icon tab-bar-icon" aria-hidden="true">
-          <use xlink:href="#icon-jiantou"></use>
+      <template #left>
+        <svg
+          class="icon tab-bar-icon"
+          aria-hidden="true"
+        >
+          <use xlink:href="#icon-jiantou" />
         </svg>
       </template>
-      <template v-slot:middle>用户注册</template>
+      <template #middle>
+        用户注册
+      </template>
     </nav-bar>
 
     <van-image
@@ -51,7 +56,12 @@
         autocomplete="email"
         :rules="[{ required: true, message: '请填写正确邮箱' }]"
       />
-      <div class="login" @click="$router.push({path: '/login'})" >已有帐号，立即登录</div>
+      <div
+        class="login"
+        @click="$router.push({path: '/login'})"
+      >
+        已有帐号，立即登录
+      </div>
       <div style="margin: 16px">
         <van-button
           round

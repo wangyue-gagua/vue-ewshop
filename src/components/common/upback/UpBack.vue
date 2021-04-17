@@ -1,5 +1,8 @@
 <template>
-  <div class="upback" @click="backUp"></div>
+  <div
+    class="upback"
+    @click="backUp"
+  />
 </template>
 <script>
 export default {

@@ -1,6 +1,12 @@
 <template>
-  <div class="goods-item" @click="goDetail(good.id)">
-    <img v-lazy="good.cover_url" alt="" />
+  <div
+    class="goods-item"
+    @click="goDetail(good.id)"
+  >
+    <img
+      v-lazy="good.cover_url"
+      alt=""
+    >
     <div class="goods-info">
       <p>{{ good.title }}</p>
       <span class="price"><small>￥</small>{{ good.price }}</span>
