@@ -104,9 +104,6 @@ export default defineComponent({
     const store = useStore();
     const id = ref('0');
     // eslint-disable-next-line radix
-    if (typeof route.query.id === 'string') {
-      id.value = route.query.id;
-    }
 
     const active = ref(0);
 
@@ -116,6 +113,10 @@ export default defineComponent({
     }) as unknown as GETGOODDETAIL;
 
     onMounted(() => {
+      if (typeof route.query.id === 'string') {
+        id.value = route.query.id;
+        console.log(`id：${id.value}`);
+      }
       getGoodDetail(parseInt(id.value, 10))
         .then((res: AxiosResponse<GETGOODDETAIL>) => {
           book.goods = res.data.goods;

@@ -3,7 +3,7 @@ import {
 } from 'vue-router';
 import { Notify } from 'vant';
 // eslint-disable-next-line import/no-cycle
-import store from '@/store';
+import { store } from '@/store';
 
 const Category = () => import('../views/category/Category.vue');
 const Detail = () => import('../views/detail/Detail.vue');

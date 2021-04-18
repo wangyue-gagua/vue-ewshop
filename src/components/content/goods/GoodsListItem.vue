@@ -4,7 +4,7 @@
     @click="goDetail(good.id)"
   >
     <img
-      v-lazy="good.cover_url"
+      :src="good.cover_url"
       alt=""
     >
     <div class="goods-info">

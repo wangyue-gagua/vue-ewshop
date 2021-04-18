@@ -79,15 +79,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
 import { Logout, getUser } from 'network/user';
-import { onMounted, toRefs } from 'vue';
+import { defineComponent, onMounted, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { Toast } from 'vant';
 
-export default {
+export default defineComponent({
   name: 'Profile',
   components: {
     NavBar,
@@ -113,7 +113,7 @@ export default {
     };
 
     // user list jump to
-    const jumpTo = (path, query) => {
+    const jumpTo = (path: string, query?: Record<string, undefined>) => {
       router.push({ path, query: query || {} });
     };
 
@@ -125,7 +125,7 @@ export default {
 
     return { logout, jumpTo, ...toRefs(state) };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

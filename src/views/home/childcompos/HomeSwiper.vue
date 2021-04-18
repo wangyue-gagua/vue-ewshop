@@ -16,15 +16,20 @@
     </van-swipe-item>
   </van-swipe>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
   name: 'HomeSwiper',
   props: {
     slides: {
       type: Array,
+      default() {
+        return [];
+      },
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

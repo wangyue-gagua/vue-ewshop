@@ -37,6 +37,13 @@ export function editAddress(id: number, params: Address) {
   });
 }
 
+export interface ResAddress extends Address {
+  id: number,
+  // eslint-disable-next-line camelcase
+  createed_at: string,
+  // eslint-disable-next-line camelcase
+  updated_at: string
+}
 // 地址列表
 export function getAddressList() {
   return request({

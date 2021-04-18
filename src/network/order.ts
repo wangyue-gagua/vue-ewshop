@@ -86,7 +86,7 @@ export function getOrderDetail(order: number) {
 interface OrderListParams {
   page?: number,
   title?: string,
-  status?: string,
+  status?: number,
   include?: string
 }
 

@@ -29,7 +29,7 @@ import {
 } from 'vant';
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import { store, key } from './store';
 
 createApp(App)
   .use(List)
@@ -58,6 +58,6 @@ createApp(App)
   .use(Grid)
   .use(GridItem)
   .use(Dialog)
-  .use(store)
+  .use(store, key)
   .use(router)
   .mount('#app');

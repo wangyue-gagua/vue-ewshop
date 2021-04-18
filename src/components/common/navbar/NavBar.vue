@@ -6,7 +6,10 @@
     >
       <slot name="left" />
     </div>
-    <div class="middle">
+    <div
+      class="middle"
+      @click="showCount"
+    >
       <slot name="middle" />
     </div>
     <div class="right">
@@ -18,17 +21,23 @@
 <script lang="ts">
 import { useRouter } from 'vue-router';
 import { defineComponent } from 'vue';
+import { useStore } from '@/store';
 
 export default defineComponent({
   name: 'NavBar',
   setup() {
     const router = useRouter();
+    const store = useStore();
+    const showCount = () => {
+      console.log(store.state.user.countCart);
+    };
     const goBack = () => {
       router.go(-1);
     };
 
     return {
       goBack,
+      showCount,
     };
   },
 });

@@ -28,7 +28,7 @@
     />
   </div>
 </template>
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
 import areaList from 'utils/area';
 import {
@@ -38,12 +38,12 @@ import {
   deleteAddress,
 } from 'network/address';
 import {
-  ref, reactive, toRefs, onMounted, computed,
+  ref, reactive, toRefs, onMounted, computed, defineComponent,
 } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { AddressEdit, Toast } from 'vant';
 
-export default {
+export default defineComponent({
   name: 'AddressEdit',
   components: {
     NavBar,
@@ -52,7 +52,10 @@ export default {
   setup() {
     const router = useRouter();
     const route = useRoute();
-    const searchResult = ref([]);
+    const searchResult = ref([{
+      name: '',
+      address: '',
+    }]);
     const state = reactive({
       type: 'add',
       addressId: 0,
@@ -60,19 +63,25 @@ export default {
     });
 
     onMounted(() => {
-      const { type, addressId } = route.query;
-      state.type = type;
-      state.addressId = addressId;
-
-      if (type === 'edit') {
-        getAddressDetails(addressId).then((res) => {
-          const areaCode = Object.keys(areaList.county_list).find(
-            (key) => areaList.county_list[key] === res.county,
-          );
-
+      if (route.query.type === 'add') {
+        state.type = route.query.type;
+      }
+      if (route.query.type === 'edit' && typeof route.query.addressId === 'string') {
+        state.type = route.query.type;
+        state.addressId = parseInt(route.query.addressId, 10);
+      }
+      if (state.type === 'edit') {
+        getAddressDetails(state.addressId).then((response) => {
+          const res = response.data;
+          const areaCode = Object.keys(areaList.county_list)
+            .find(
+              // eslint-disable-next-line camelcase
+              (key) => areaList.county_list[key as unknown as keyof typeof areaList.county_list]
+                  === res.county,
+            );
           state.addressInfo = {
-            name: res.name,
             tel: res.phone,
+            name: res.name,
             province: res.province,
             city: res.city,
             county: res.county,
@@ -85,7 +94,7 @@ export default {
     });
 
     const title = computed(() => (state.type === 'add' ? '新增地址' : '修改地址'));
-    const onSave = (content) => {
+    const onSave = (content: any) => {
       const params = {
         name: content.name,
         address: content.addressDetail,
@@ -99,7 +108,7 @@ export default {
       if (state.type === 'edit') {
         editAddress(state.addressId, params);
       } else if (state.type === 'add') {
-        addAddress(params).then((res) => {
+        addAddress(params).then(() => {
           Toast('添加成功');
         });
       }
@@ -109,7 +118,7 @@ export default {
       }, 1000);
     };
     const onDelete = () => {
-      deleteAddress(state.addressId).then((res) => {
+      deleteAddress(state.addressId).then(() => {
         Toast('删除成功');
       });
 
@@ -117,7 +126,7 @@ export default {
         router.back();
       }, 1000);
     };
-    const onChangeDetail = (val) => {
+    const onChangeDetail = (val: string) => {
       if (val) {
         searchResult.value = [
           {
@@ -140,7 +149,7 @@ export default {
       ...toRefs(state),
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

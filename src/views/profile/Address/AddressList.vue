@@ -27,14 +27,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
-import { getAddressList } from 'network/address';
+import { getAddressList, ResAddress } from 'network/address';
 import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
-import { AddressList, Toast } from 'vant';
+import { ref, onMounted, defineComponent } from 'vue';
+import { AddressList } from 'vant';
 
-export default {
+export default defineComponent({
   name: 'AddressList',
   components: {
     NavBar,
@@ -43,15 +43,13 @@ export default {
   setup() {
     const chosenAddressId = ref('1');
     const list = ref([]);
-    const disabledList = [
-    ];
-
+    const disabledList = [''];
     const router = useRouter();
-
     onMounted(() => {
-      getAddressList().then((res) => {
+      getAddressList().then((response) => {
+        const res = response.data;
         if (res.data.length !== 0) {
-          list.value = res.data.map((item) => ({
+          list.value = res.data.map((item: ResAddress) => ({
             id: item.id,
             name: item.name,
             tel: item.phone,
@@ -65,11 +63,11 @@ export default {
       path: '/address-edit',
       query: { type: 'add' },
     });
-    const onEdit = (item) => router.push({
+    const onEdit = (item: ResAddress) => router.push({
       path: '/address-edit',
       query: { type: 'edit', addressId: item.id },
     });
-    const onSelect = (item) => router.push({ path: 'createoder', query: { addressId: item.id } });
+    const onSelect = (item: ResAddress) => router.push({ path: '/createOrder', query: { addressId: item.id } });
 
     return {
       list,
@@ -80,7 +78,7 @@ export default {
       chosenAddressId,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" >

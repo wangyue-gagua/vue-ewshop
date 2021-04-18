@@ -59,15 +59,15 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import NavBar from 'components/common/navbar/NavBar.vue';
 import { getOrderList } from 'network/order';
 import {
-  ref, reactive, onMounted, toRefs,
+  ref, reactive, onMounted, toRefs, defineComponent,
 } from 'vue';
 import { useRouter } from 'vue-router';
 
-export default {
+export default defineComponent({
   name: 'Order',
   components: {
     NavBar,
@@ -88,7 +88,6 @@ export default {
     const onLoad = () => {
       if (!state.refreshing && state.page < state.totalPage) {
         state.page += 1;
-        console.log(`${state.page}@@@@@@`);
       }
       if (state.refreshing) {
         state.list = [];
@@ -98,11 +97,11 @@ export default {
         page: state.page,
         status: state.status,
         include: 'user,orderDetails.goods',
-      }).then((res) => {
+      }).then((response) => {
+        const res = response.data;
         state.list = state.list.concat(res.data);
         state.loading = false;
         state.totalPage = res.meta.pagination.total_pages;
-        console.log(state.totalPage);
         if (state.page >= state.totalPage) {
           state.finished = true;
         }
@@ -121,12 +120,12 @@ export default {
       onLoad();
     };
 
-    const onTabChange = (name) => {
+    const onTabChange = (name: number) => {
       state.status = name;
       onRefresh();
     };
 
-    const goTo = (id) => {
+    const goTo = (id: number) => {
       router.push({ path: '/orderDetail', query: { id } });
     };
     onMounted(() => {
@@ -142,7 +141,7 @@ export default {
       goTo,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

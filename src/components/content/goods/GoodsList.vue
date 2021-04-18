@@ -1,8 +1,8 @@
 <template>
   <div class="goods">
     <GoodsListItem
-      v-for="item of goodsData"
-      :key="item"
+      v-for="(item, index) of goodsData"
+      :key="index"
       :good="item"
     />
   </div>
