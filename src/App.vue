@@ -1,12 +1,12 @@
 <template>
-  <router-view />
-  <!--  <router-view v-slot="{ Component }">
+  <!--  <router-view />-->
+  <router-view v-slot="{ Component }">
     <transition>
       <keep-alive exclude="Detail">
         <component :is="Component" />
       </keep-alive>
     </transition>
-  </router-view>-->
+  </router-view>
 
   <div id="nav">
     <router-link
@@ -38,9 +38,8 @@
       class="tab-bar-item"
     >
       <van-badge
-        :content="cartCount"
+        :content="$store.state.user.countCart"
         max="9"
-        @click="showCart"
       >
         <svg
           class="icon tab-bar-icon"
@@ -67,21 +66,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import { useStore } from '@/store';
 
 export default defineComponent({
   name: 'App',
   setup() {
     const store = useStore();
-    console.log(store.state);
-    const cartCount = ref(store.state.user.countCart);
-    const showCart = () => console.log(store.state.user.countCart);
     onMounted(() => {
-      // store.dispatch('updateCart');
-      console.log(store);
+      store.dispatch('updateCart');
     });
-    return { cartCount, showCart };
   },
 });
 </script>

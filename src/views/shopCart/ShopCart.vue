@@ -161,7 +161,6 @@ export default defineComponent({
       });
       getCart('include=goods')
         .then((res: AxiosResponse<CartList>) => {
-          console.log(res);
           cartInfo.list = res.data.data;
           cartInfo.checked = res.data.data
             .filter((item) => item.is_checked === 1)
@@ -187,13 +186,7 @@ export default defineComponent({
         forbidClick: true,
       });
       modifyCart(parseInt(detail.name, 10), { num: parseInt(value, 10) })
-        .then((res) => {
-          // update list
-          // cartInfo.list.forEach((item) =>{
-          //   if(item.id==detail.name){
-          //     item.num = value
-          //   }
-          // })
+        .then(() => {
           Toast.clear();
         });
     };

@@ -65,8 +65,8 @@ import NavBar from 'components/common/navbar/NavBar.vue';
 import { Login } from 'network/user';
 import { defineComponent, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { Notify, Toast } from 'vant';
-import { useStore } from 'vuex';
+import { Toast } from 'vant';
+import { useStore } from '@/store';
 
 export default defineComponent({
   name: 'Login',

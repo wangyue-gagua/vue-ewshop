@@ -2,12 +2,11 @@
 import { STATE } from '@/store/index';
 
 const mutations = {
-  setIsloggedIn(state: STATE, payload: any) {
+  setIsloggedIn(state: STATE, payload: boolean): void {
     state.user.isLoggedIn = payload;
   },
-  addCart(state: STATE, payload: any) {
+  addCart(state: STATE, payload: { count: number }): void {
     state.user.countCart = payload.count;
-    console.log(`add cart: ${state.user.countCart}`);
   },
 };
 

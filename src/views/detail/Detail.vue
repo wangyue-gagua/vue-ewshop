@@ -83,7 +83,7 @@
 import NavBar from 'components/common/navbar/NavBar.vue';
 import GoodsList from 'components/content/goods/GoodsList.vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import { useStore } from '@/store';
 import { GETGOODDETAIL, getGoodDetail } from 'network/detail';
 import { addCart } from 'network/cart';
 import {
@@ -115,7 +115,6 @@ export default defineComponent({
     onMounted(() => {
       if (typeof route.query.id === 'string') {
         id.value = route.query.id;
-        console.log(`id：${id.value}`);
       }
       getGoodDetail(parseInt(id.value, 10))
         .then((res: AxiosResponse<GETGOODDETAIL>) => {
@@ -144,7 +143,6 @@ export default defineComponent({
       })
         .then((res) => {
           if (res.status === 201 || res.status === 204) {
-            Toast.success('添加成功, 跳转至购物车');
             router.push({ path: '/shopCart' });
             store.dispatch('updateCart');
           }
