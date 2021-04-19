@@ -19,10 +19,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useRouter } from 'vue-router';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   name: 'RecommendView',
   props: {
     recommends: {
@@ -35,13 +36,13 @@ export default {
 
   setup() {
     const router = useRouter();
-    const goDetail = (id) => {
+    const goDetail = (id: number) => {
       router.push({ path: '/detail', query: { id } });
     };
 
     return { goDetail };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

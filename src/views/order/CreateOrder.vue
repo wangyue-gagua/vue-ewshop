@@ -52,7 +52,6 @@
       :close-on-click-overlay="false"
       @close="onClose"
       position="bottom"
-      :style="{ height: '40%' }"
     >
       <van-grid
         :border="false"
@@ -78,7 +77,7 @@ import {
   reactive, onMounted, toRefs, computed, defineComponent,
 } from 'vue';
 import { Toast } from 'vant';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { AxiosResponse } from 'axios';
 
@@ -88,7 +87,6 @@ export default defineComponent({
     NavBar,
   },
   setup() {
-    const route = useRoute();
     const router = useRouter();
     const store = useStore();
     const state = reactive({
@@ -204,20 +202,22 @@ export default defineComponent({
   text-align: left;
   padding: 1.5em 1em;
   background-size: 10vw 2px;
+  background-repeat: repeat-x;
+  background-position: bottom;
   //noinspection CssInvalidFunction
-  background: linear-gradient(
+  background-image: linear-gradient(
           135deg,
-          #f05959 0% 45%,
+          #f05959 45%,
           transparent 45% 50%,
           #6363db 50% 95%,
-          transparent 95% 100%
-  ) repeat-x bottom;
-
+          transparent 95%);
   .van-icon {
     float: right;
   }
 }
-
+.van-popup {
+  height: 40%;
+}
 .van-card {
   text-align: left;
 }

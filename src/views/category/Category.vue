@@ -182,7 +182,6 @@ export default defineComponent({
       currentId.value = id;
       init();
       state.finished = false;
-      console.log(state.finished);
     };
 
     watchEffect(() => {
